@@ -40,6 +40,7 @@
         android:maxWidth="250dp"
         android:padding="16dp"
         android:textColor="@color/message"
+        android:textSize="@dimen/text_size"
         app:layout_constraintBottom_toBottomOf="@id/ivCircleBig"
         app:layout_constraintEnd_toEndOf="@id/ivCircleBig"
         tools:text="@string/sample_long_text" />
@@ -48,14 +49,13 @@
         android:id="@+id/tvDate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="20dp"
         android:layout_marginTop="5dp"
+        android:layout_marginEnd="20dp"
         android:textColor="@color/gray"
-        android:textSize="8sp"
+        android:textSize="@dimen/text_size_small"
         app:layout_constraintEnd_toEndOf="@id/tvMessage"
         app:layout_constraintTop_toBottomOf="@id/tvMessage"
-        tools:text="@string/sample_date_time"
-        tools:ignore="SmallSp" />
-
+        tools:ignore="SmallSp"
+        tools:text="@string/sample_date_time" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

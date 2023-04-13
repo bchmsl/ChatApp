@@ -13,13 +13,9 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        supportFragmentManager.beginTransaction()
-            .replace(R.id.fcvFirst, FirstUserFragment(), null)
-            .commit()
-
-        supportFragmentManager.beginTransaction()
-            .replace(R.id.fcvSecond, SecondUserFragment(), null)
-            .commit()
-
+        supportFragmentManager.beginTransaction().apply {
+            replace(R.id.fcvFirst, FirstUserFragment(), null).commit()
+            replace(R.id.fcvSecond, SecondUserFragment(), null).commit()
+        }
     }
 }

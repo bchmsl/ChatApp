@@ -16,5 +16,6 @@
     <color name="light_gray">#74C7C7C7</color>
     <color name="message">#191919</color>
     <color name="primaryColor">#9F60FF</color>
+    <color name="divider">#F7CE7F</color>
 
 </resources>

@@ -26,10 +26,10 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="16dp"
         android:layout_marginBottom="30dp"
-        app:boxCornerRadiusBottomEnd="28dp"
-        app:boxCornerRadiusBottomStart="28dp"
-        app:boxCornerRadiusTopEnd="28dp"
-        app:boxCornerRadiusTopStart="28dp"
+        app:boxCornerRadiusBottomEnd="@dimen/radius"
+        app:boxCornerRadiusBottomStart="@dimen/radius"
+        app:boxCornerRadiusTopEnd="@dimen/radius"
+        app:boxCornerRadiusTopStart="@dimen/radius"
         app:boxStrokeWidth="1dp"
         app:hintEnabled="false"
         app:layout_constraintBottom_toBottomOf="parent">
@@ -45,7 +45,7 @@
             android:scrollbarTrackVertical="@drawable/scrollbar_track"
             android:scrollbars="vertical"
             android:textColorHint="@color/gray"
-            android:textSize="14sp"
+            android:textSize="@dimen/text_size"
             tools:text="@string/sample_longest_text" />
 
     </com.google.android.material.textfield.TextInputLayout>
@@ -54,7 +54,7 @@
         android:id="@+id/btnSend"
         android:layout_width="32dp"
         android:layout_height="0dp"
-        android:layout_margin="10dp"
+        android:layout_margin="@dimen/margins_paddings"
         android:background="@android:color/transparent"
         android:src="@drawable/button_send"
         app:layout_constraintBottom_toBottomOf="@id/tilMessage"
@@ -64,7 +64,7 @@
     <View
         android:layout_width="2dp"
         android:layout_height="match_parent"
-        android:background="#F7CE7F"
+        android:background="@color/divider"
         app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

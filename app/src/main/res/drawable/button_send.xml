@@ -3,8 +3,8 @@
 
     <item android:drawable="@drawable/circle" />
     <item android:drawable="@drawable/ic_send"
-        android:start="10dp"
-        android:end="10dp"
-        android:top="10dp"
-        android:bottom="10dp"/>
+        android:start="@dimen/margins_paddings"
+        android:end="@dimen/margins_paddings"
+        android:top="@dimen/margins_paddings"
+        android:bottom="@dimen/margins_paddings"/>
 </layer-list>
