@@ -14,8 +14,8 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         supportFragmentManager.beginTransaction().apply {
-            replace(R.id.fcvFirst, FirstUserFragment(), null).commit()
-            replace(R.id.fcvSecond, SecondUserFragment(), null).commit()
-        }
+            replace(R.id.fcvFirst, FirstUserFragment())
+            replace(R.id.fcvSecond, SecondUserFragment())
+        }.commit()
     }
 }
