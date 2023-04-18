@@ -1,7 +1,8 @@
-package com.bchmsl.chatapp
+package com.bchmsl.chatapp.presentation
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.bchmsl.chatapp.R
 import com.bchmsl.chatapp.databinding.ActivityMainBinding
 import com.bchmsl.chatapp.presentation.first_user.FirstUserFragment
 import com.bchmsl.chatapp.presentation.second_user.SecondUserFragment
@@ -18,8 +19,8 @@ class MainActivity : AppCompatActivity() {
 
     private fun setupFragments(){
         supportFragmentManager.beginTransaction().apply {
-            replace(R.id.fcvFirst, FirstUserFragment())
-            replace(R.id.fcvSecond, SecondUserFragment())
+            add(R.id.fcvFirst, FirstUserFragment())
+            add(R.id.fcvSecond, SecondUserFragment())
         }.commit()
     }
 }
