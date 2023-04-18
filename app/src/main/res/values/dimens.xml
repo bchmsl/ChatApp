@@ -18,6 +18,8 @@
     <dimen name="dimen_3_dp">3dp</dimen>
     <dimen name="dimen_250_dp">250dp</dimen>
     <dimen name="dimen_5_dp">5dp</dimen>
+    <dimen name="dimen_neg_15_dp">-15dp</dimen>
+    <dimen name="dimen_neg_25_dp">-25dp</dimen>
 
     <dimen name="dimen_8_sp">8sp</dimen>
     <dimen name="dimen_14_sp">14sp</dimen>

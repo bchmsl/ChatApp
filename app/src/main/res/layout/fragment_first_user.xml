@@ -17,7 +17,7 @@
         app:layout_constraintBottom_toTopOf="@id/tilMessage"
         app:layout_constraintTop_toTopOf="parent"
         app:reverseLayout="true"
-        tools:listitem="@layout/layout_received_item" />
+        tools:listitem="@layout/layout_message_item" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/tilMessage"
