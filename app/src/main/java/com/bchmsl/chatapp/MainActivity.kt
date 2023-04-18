@@ -13,6 +13,10 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        setupFragments()
+    }
+
+    private fun setupFragments(){
         supportFragmentManager.beginTransaction().apply {
             replace(R.id.fcvFirst, FirstUserFragment())
             replace(R.id.fcvSecond, SecondUserFragment())

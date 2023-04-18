@@ -13,7 +13,7 @@
         android:layout_height="@dimen/dimen_0_dp"
         android:layout_marginBottom="@dimen/dimen_19_dp"
         android:src="@drawable/circle"
-        android:tint="@color/bubble_received"
+        android:tint="@color/extra_light_gray"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintDimensionRatio="1"
         app:layout_constraintStart_toStartOf="parent" />
@@ -23,7 +23,7 @@
         android:layout_width="@dimen/dimen_18_dp"
         android:layout_height="@dimen/dimen_0_dp"
         android:src="@drawable/circle"
-        android:tint="@color/bubble_received"
+        android:tint="@color/extra_light_gray"
         app:layout_constraintBottom_toTopOf="@id/ivCircleSmall"
         app:layout_constraintDimensionRatio="1"
         app:layout_constraintStart_toEndOf="@id/ivCircleSmall" />
@@ -34,7 +34,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="3dp"
-        android:backgroundTint="@color/bubble_received"
+        android:backgroundTint="@color/extra_light_gray"
         app:layout_constraintBottom_toBottomOf="@id/ivCircleBig"
         app:layout_constraintStart_toStartOf="@id/ivCircleBig"
         tools:text="გამარჯობა ზეზვა!" />
