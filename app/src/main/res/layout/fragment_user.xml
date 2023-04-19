@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".presentation.first_user.FirstUserFragment"
+    tools:context=".presentation.user.UserFragment"
     tools:ignore="RtlSymmetry">
 
     <androidx.recyclerview.widget.RecyclerView
@@ -16,7 +16,6 @@
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintBottom_toTopOf="@id/tilMessage"
         app:layout_constraintTop_toTopOf="parent"
-        app:reverseLayout="true"
         tools:listitem="@layout/layout_message_item" />
 
     <com.google.android.material.textfield.TextInputLayout

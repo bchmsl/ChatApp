@@ -12,7 +12,7 @@ typealias Inflater<VB> = (inflater: LayoutInflater, container: ViewGroup, attach
 abstract class BaseFragment<VB : ViewBinding> : Fragment() {
 
     private var _binding: VB? = null
-    private val binding get() = _binding!!
+    protected val binding get() = _binding!!
 
     abstract fun inflate(): Inflater<VB>
 
@@ -33,7 +33,13 @@ abstract class BaseFragment<VB : ViewBinding> : Fragment() {
         onBind()
     }
 
-    abstract fun onBind()
+    open fun onBind(){
+        loadContent()
+        listeners()
+    }
+
+    abstract fun listeners()
+    abstract fun loadContent()
 
     override fun onDestroyView() {
         super.onDestroyView()
