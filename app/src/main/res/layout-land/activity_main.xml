@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="?attr/background"
-    android:orientation="vertical"
+    android:orientation="horizontal"
     tools:context=".presentation.MainActivity">
 
     <androidx.fragment.app.FragmentContainerView
@@ -14,8 +14,8 @@
         android:layout_weight="1" />
 
     <View
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/dimen_4_dp"
+        android:layout_width="@dimen/dimen_4_dp"
+        android:layout_height="match_parent"
         android:background="@color/light_yellow"/>
 
     <androidx.fragment.app.FragmentContainerView

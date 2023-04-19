@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".presentation.first_user.FirstUserFragment"
+    tools:ignore="RtlSymmetry">
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvMessageHistory"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dimen_0_dp"
+        android:clipToPadding="false"
+        android:paddingVertical="@dimen/dimen_18_dp"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layout_constraintBottom_toTopOf="@id/tilMessage"
+        app:layout_constraintTop_toTopOf="parent"
+        app:reverseLayout="true"
+        tools:listitem="@layout/layout_message_item" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/tilMessage"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.MessageTextInputLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/dimen_16_dp"
+        android:layout_marginBottom="@dimen/dimen_30_dp"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/etMessage"
+            style="@style/Base.Widget.MaterialComponents.TextInputEditText.MessageTextInputEditText"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:hint="@string/prompt_enter_message"
+            android:paddingEnd="@dimen/dimen_56_dp"
+            tools:text="გაგიმარჯოს გენაცვალე!" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <androidx.appcompat.widget.AppCompatImageButton
+        android:id="@+id/btnSend"
+        android:layout_width="@dimen/dimen_32_dp"
+        android:layout_height="@dimen/dimen_0_dp"
+        android:layout_margin="@dimen/dimen_10_dp"
+        android:background="@android:color/transparent"
+        android:src="@drawable/button_send"
+        app:layout_constraintBottom_toBottomOf="@id/tilMessage"
+        app:layout_constraintDimensionRatio="1"
+        app:layout_constraintEnd_toEndOf="@id/tilMessage" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
