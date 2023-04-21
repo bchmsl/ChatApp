@@ -4,13 +4,10 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.bchmsl.chatapp.R
 import com.bchmsl.chatapp.databinding.ActivityMainBinding
-import com.bchmsl.chatapp.presentation.user.UserFragment
+import com.bchmsl.chatapp.presentation.model.FragmentTags
+import com.bchmsl.chatapp.presentation.ui.chat.ChatFragment
 
 class MainActivity : AppCompatActivity() {
-    companion object {
-        const val FIRST_USER_TAG = "firstUser"
-        const val SECOND_USER_TAG = "secondUser"
-    }
 
     private lateinit var binding: ActivityMainBinding
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -23,8 +20,8 @@ class MainActivity : AppCompatActivity() {
 
     private fun setupFragments() {
         supportFragmentManager.beginTransaction().apply {
-            add(R.id.fcvFirst, UserFragment(), FIRST_USER_TAG)
-            add(R.id.fcvSecond, UserFragment(), SECOND_USER_TAG)
+            add(R.id.fcvFirst, ChatFragment(), FragmentTags.FIRST_USER_TAG.name)
+            add(R.id.fcvSecond, ChatFragment(), FragmentTags.SECOND_USER_TAG.name)
         }.commit()
     }
 }

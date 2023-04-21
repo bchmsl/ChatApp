@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".presentation.user.UserFragment"
+    tools:context=".presentation.ui.chat.ChatFragment"
     tools:ignore="RtlSymmetry">
 
     <androidx.recyclerview.widget.RecyclerView
@@ -32,6 +32,7 @@
             style="@style/Base.Widget.MaterialComponents.TextInputEditText.MessageTextInputEditText"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:text="გამარჯობა"
             android:hint="@string/prompt_enter_message"
             android:paddingEnd="@dimen/dimen_56_dp"
             tools:text="გაგიმარჯოს გენაცვალე!" />
