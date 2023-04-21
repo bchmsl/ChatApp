@@ -2,13 +2,14 @@ package com.bchmsl.chatapp.presentation.ui.chat
 
 import android.content.IntentFilter
 import com.bchmsl.chatapp.common.extensions.async
-import com.bchmsl.chatapp.common.extensions.getCurrentDateTime
+import com.bchmsl.chatapp.common.extensions.hideKeyboard
+import com.bchmsl.chatapp.common.providers.getCurrentDateTime
 import com.bchmsl.chatapp.databinding.FragmentUserBinding
 import com.bchmsl.chatapp.presentation.adapter.ChatAdapter
 import com.bchmsl.chatapp.presentation.base.BaseFragment
 import com.bchmsl.chatapp.presentation.base.Inflater
-import com.bchmsl.chatapp.presentation.model.UserTags
 import com.bchmsl.chatapp.presentation.model.MessageUiModel
+import com.bchmsl.chatapp.presentation.model.UserTags
 import com.bchmsl.chatapp.service.MessagesReceiver
 
 class ChatFragment : BaseFragment<FragmentUserBinding, UserViewModel, MessagesReceiver>() {
@@ -21,12 +22,23 @@ class ChatFragment : BaseFragment<FragmentUserBinding, UserViewModel, MessagesRe
 
 
     override fun listeners(vm: UserViewModel) {
-        binding.btnSend.setOnClickListener {
-            sendMessage(vm)
+        with(binding) {
+            btnSend.setOnClickListener {
+                sendMessage(vm)
+                requireActivity().hideKeyboard(root)
+            }
+            rvMessageHistory.addOnLayoutChangeListener { v, _, _, _, bottom, _, _, _, oldBottom ->
+                if (bottom < oldBottom) {
+                    rvMessageHistory.postDelayed({
+                        rvMessageHistory.scrollToPosition(userMessagesAdapter.itemCount - 1)
+                    }, 0)
+                }
+            }
         }
     }
 
     override fun loadContent(vm: UserViewModel) {
+        vm.retrieveMessages()
         binding.rvMessageHistory.adapter = userMessagesAdapter
         async {
             vm.messagesHistoryState.collect {
@@ -45,7 +57,7 @@ class ChatFragment : BaseFragment<FragmentUserBinding, UserViewModel, MessagesRe
             if (!etMessage.text.isNullOrBlank()) {
                 vm.sendMessage(
                     etMessage.text.toString(),
-                    requireContext().getCurrentDateTime(),
+                    getCurrentDateTime(),
                     tag == UserTags.FIRST_USER_TAG.name
                 )
                 etMessage.setText("")

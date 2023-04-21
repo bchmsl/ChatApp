@@ -4,6 +4,9 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.bchmsl.chatapp.R
+import com.bchmsl.chatapp.common.extensions.setBackgroundTint
+import com.bchmsl.chatapp.common.extensions.setTint
 import com.bchmsl.chatapp.databinding.LayoutMessageItemBinding
 import com.bchmsl.chatapp.presentation.model.MessageUiModel
 import com.bchmsl.chatapp.presentation.model.UserTags
@@ -32,13 +35,29 @@ class ChatAdapter(private val user: UserTags?) :
                 if (user == UserTags.FIRST_USER_TAG && message.isSentByFirstUser ||
                     user == UserTags.SECOND_USER_TAG && !message.isSentByFirstUser
                 ) {
-                    root.scaleX = 1f
-                    tvMessage.scaleX = 1f
-                    tvDate.scaleX = 1f
+                    with(1f) {
+                        root.scaleX = this
+                        tvMessage.scaleX = this
+                        tvDate.scaleX = this
+                    }
+
+                    with(R.color.purple_light) {
+                        ivCircleSmall.setTint(this)
+                        ivCircleBig.setTint(this)
+                        tvMessage.setBackgroundTint(this)
+                    }
                 } else {
-                    root.scaleX = -1f
-                    tvMessage.scaleX = -1f
-                    tvDate.scaleX = -1f
+                    with(-1f) {
+                        root.scaleX = this
+                        tvMessage.scaleX = this
+                        tvDate.scaleX = this
+                    }
+
+                    with(R.color.neutral_05) {
+                        ivCircleSmall.setTint(this)
+                        ivCircleBig.setTint(this)
+                        tvMessage.setBackgroundTint(this)
+                    }
                 }
             }
         }

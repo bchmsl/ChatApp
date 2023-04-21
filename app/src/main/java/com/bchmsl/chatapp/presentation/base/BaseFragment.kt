@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.viewbinding.ViewBinding
+import com.bchmsl.chatapp.common.extensions.log
 
 typealias Inflater<VB> = (inflater: LayoutInflater, container: ViewGroup, attachToRoot: Boolean) -> VB
 
@@ -38,6 +39,7 @@ abstract class BaseFragment<VB : ViewBinding, VM : ViewModel, BR : BroadcastRece
         vm = ViewModelProvider(requireActivity())[provideViewModel()]
         receiver = setReceiver()
         requireActivity().registerReceiver(receiver, filter)
+        log("onCreateView")
         return binding.root
     }
 
@@ -58,6 +60,7 @@ abstract class BaseFragment<VB : ViewBinding, VM : ViewModel, BR : BroadcastRece
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+        log("onDestroyView")
         requireActivity().unregisterReceiver(receiver)
     }
 

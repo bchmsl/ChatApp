@@ -1,10 +1,11 @@
 package com.bchmsl.chatapp.common.extensions
 
+import android.app.Activity
 import android.content.Context
-import java.text.SimpleDateFormat
-import java.util.*
+import android.view.View
+import android.view.inputmethod.InputMethodManager
 
-fun Context.getCurrentDateTime(): String {
-    val dateFormat = SimpleDateFormat("dd/MM/yyyy HH:mm:ss", Locale.getDefault())
-    return dateFormat.format(Date())
+fun Context.hideKeyboard(view: View) {
+    val inputMethodManager = getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+    inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
 }

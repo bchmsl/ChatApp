@@ -1,8 +1,7 @@
 package com.bchmsl.chatapp.presentation
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import com.bchmsl.chatapp.R
+import androidx.appcompat.app.AppCompatActivity
 import com.bchmsl.chatapp.databinding.ActivityMainBinding
 import com.bchmsl.chatapp.presentation.model.UserTags
 import com.bchmsl.chatapp.presentation.ui.chat.ChatFragment
@@ -15,13 +14,18 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        setupFragments()
+        setupFragments(savedInstanceState)
     }
 
-    private fun setupFragments() {
+    private fun setupFragments(savedInstanceState: Bundle?) {
         supportFragmentManager.beginTransaction().apply {
-            add(R.id.fcvFirst, ChatFragment(), UserTags.FIRST_USER_TAG.name)
-            add(R.id.fcvSecond, ChatFragment(), UserTags.SECOND_USER_TAG.name)
+            if (savedInstanceState == null) {
+                add(binding.fcvFirst.id, ChatFragment(), UserTags.FIRST_USER_TAG.name)
+                add(binding.fcvSecond.id, ChatFragment(), UserTags.SECOND_USER_TAG.name)
+            } else {
+                replace(binding.fcvFirst.id, ChatFragment(), UserTags.FIRST_USER_TAG.name)
+                replace(binding.fcvSecond.id, ChatFragment(), UserTags.SECOND_USER_TAG.name)
+            }
         }.commit()
     }
 }

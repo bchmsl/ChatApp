@@ -4,12 +4,12 @@
         <item name="android:background">@drawable/bubble</item>
         <item name="android:maxWidth">@dimen/dimen_250_dp</item>
         <item name="android:padding">@dimen/dimen_16_dp</item>
-        <item name="android:textColor">@color/extra_dark_gray</item>
+        <item name="android:textColor">@color/neutral_01</item>
         <item name="android:textSize">@dimen/dimen_14_sp</item>
     </style>
 
     <style name="Base.Widget.AppCompat.TextView.TimeDeliveredTextView" parent="Widget.AppCompat.TextView">
-        <item name="android:textColor">@color/gray</item>
+        <item name="android:textColor">@color/neutral_02</item>
         <item name="android:textSize">@dimen/dimen_8_sp</item>
     </style>
 
@@ -27,7 +27,7 @@
         <item name="android:scrollbarThumbVertical">@drawable/scrollbar_thumb</item>
         <item name="android:scrollbarTrackVertical">@drawable/scrollbar_track</item>
         <item name="android:scrollbars">vertical</item>
-        <item name="android:textColorHint">@color/gray</item>
+        <item name="android:textColorHint">@color/neutral_02</item>
         <item name="android:textSize">@dimen/dimen_14_sp</item>
     </style>
 

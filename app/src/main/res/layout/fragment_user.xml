@@ -16,6 +16,7 @@
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintBottom_toTopOf="@id/tilMessage"
         app:layout_constraintTop_toTopOf="parent"
+        tools:itemCount="10"
         tools:listitem="@layout/layout_message_item" />
 
     <com.google.android.material.textfield.TextInputLayout
@@ -32,7 +33,6 @@
             style="@style/Base.Widget.MaterialComponents.TextInputEditText.MessageTextInputEditText"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:text="გამარჯობა"
             android:hint="@string/prompt_enter_message"
             android:paddingEnd="@dimen/dimen_56_dp"
             tools:text="გაგიმარჯოს გენაცვალე!" />
@@ -41,10 +41,11 @@
 
     <androidx.appcompat.widget.AppCompatImageButton
         android:id="@+id/btnSend"
-        android:layout_width="@dimen/dimen_32_dp"
+        android:layout_width="@dimen/dimen_55_dp"
         android:layout_height="@dimen/dimen_0_dp"
-        android:layout_margin="@dimen/dimen_10_dp"
         android:background="@android:color/transparent"
+        android:padding="@dimen/dimen_10_dp"
+        android:scaleType="fitCenter"
         android:src="@drawable/button_send"
         app:layout_constraintBottom_toBottomOf="@id/tilMessage"
         app:layout_constraintDimensionRatio="1"
