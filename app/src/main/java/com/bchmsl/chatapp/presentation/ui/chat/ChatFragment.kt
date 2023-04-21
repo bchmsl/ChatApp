@@ -4,17 +4,16 @@ import android.content.IntentFilter
 import com.bchmsl.chatapp.common.extensions.async
 import com.bchmsl.chatapp.common.extensions.getCurrentDateTime
 import com.bchmsl.chatapp.databinding.FragmentUserBinding
-import com.bchmsl.chatapp.presentation.adapter.FirstUserMessagesAdapter
-import com.bchmsl.chatapp.presentation.adapter.SecondUserMessagesAdapter
+import com.bchmsl.chatapp.presentation.adapter.ChatAdapter
 import com.bchmsl.chatapp.presentation.base.BaseFragment
 import com.bchmsl.chatapp.presentation.base.Inflater
-import com.bchmsl.chatapp.presentation.model.FragmentTags
+import com.bchmsl.chatapp.presentation.model.UserTags
 import com.bchmsl.chatapp.presentation.model.MessageUiModel
 import com.bchmsl.chatapp.service.MessagesReceiver
 
 class ChatFragment : BaseFragment<FragmentUserBinding, UserViewModel, MessagesReceiver>() {
 
-    private val userMessagesAdapter by lazy { if (tag == FragmentTags.FIRST_USER_TAG.name) FirstUserMessagesAdapter() else SecondUserMessagesAdapter() }
+    private val userMessagesAdapter by lazy { ChatAdapter(tag?.let { UserTags.valueOf(it) }) }
     override val filter = IntentFilter(MessagesReceiver.ACTION)
     override fun setReceiver(): MessagesReceiver = lazy { MessagesReceiver() }.value
     override fun inflate(): Inflater<FragmentUserBinding> = FragmentUserBinding::inflate
@@ -47,7 +46,7 @@ class ChatFragment : BaseFragment<FragmentUserBinding, UserViewModel, MessagesRe
                 vm.sendMessage(
                     etMessage.text.toString(),
                     requireContext().getCurrentDateTime(),
-                    tag == FragmentTags.FIRST_USER_TAG.name
+                    tag == UserTags.FIRST_USER_TAG.name
                 )
                 etMessage.setText("")
                 sendBroadcast(MessagesReceiver.ACTION)

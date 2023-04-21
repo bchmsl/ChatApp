@@ -23,7 +23,7 @@ abstract class BaseFragment<VB : ViewBinding, VM : ViewModel, BR : BroadcastRece
 
     protected abstract val filter: IntentFilter
     protected lateinit var receiver: BR
-    protected val intent by lazy { Intent() }
+    private val intent by lazy { Intent() }
 
     abstract fun inflate(): Inflater<VB>
     abstract fun provideViewModel(): Class<VM>

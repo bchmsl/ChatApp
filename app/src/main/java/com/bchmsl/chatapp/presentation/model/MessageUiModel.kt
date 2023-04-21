@@ -1,11 +1,14 @@
 package com.bchmsl.chatapp.presentation.model
 
 data class MessageUiModel(
-    val id: Int,
+    override val id: Int,
     val message: String,
     val sentDate: String,
     val isSentByFirstUser: Boolean
-) {
+): ModelWithId<MessageUiModel>() {
+
+
+
     // This comp is temporary to test messages functionality
     companion object {
         var id = 0

@@ -4,7 +4,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.bchmsl.chatapp.R
 import com.bchmsl.chatapp.databinding.ActivityMainBinding
-import com.bchmsl.chatapp.presentation.model.FragmentTags
+import com.bchmsl.chatapp.presentation.model.UserTags
 import com.bchmsl.chatapp.presentation.ui.chat.ChatFragment
 
 class MainActivity : AppCompatActivity() {
@@ -20,8 +20,8 @@ class MainActivity : AppCompatActivity() {
 
     private fun setupFragments() {
         supportFragmentManager.beginTransaction().apply {
-            add(R.id.fcvFirst, ChatFragment(), FragmentTags.FIRST_USER_TAG.name)
-            add(R.id.fcvSecond, ChatFragment(), FragmentTags.SECOND_USER_TAG.name)
+            add(R.id.fcvFirst, ChatFragment(), UserTags.FIRST_USER_TAG.name)
+            add(R.id.fcvSecond, ChatFragment(), UserTags.SECOND_USER_TAG.name)
         }.commit()
     }
 }
