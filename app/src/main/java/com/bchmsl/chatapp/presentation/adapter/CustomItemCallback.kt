@@ -8,5 +8,5 @@ class CustomItemCallback<T : ModelWithId<T>> : DiffUtil.ItemCallback<T>() {
         oldItem.id == newItem.id
 
     override fun areContentsTheSame(oldItem: T, newItem: T): Boolean =
-        oldItem == newItem
+        oldItem.hashCode() == newItem.hashCode()
 }

@@ -1,7 +1,7 @@
 package com.bchmsl.chatapp.presentation.ui.chat
 
 import androidx.lifecycle.ViewModel
-import com.bchmsl.chatapp.common.extensions.async
+import com.bchmsl.chatapp.common.extensions.executeAsync
 import com.bchmsl.chatapp.presentation.model.MessageUiModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
@@ -12,7 +12,7 @@ class UserViewModel : ViewModel() {
     val messagesHistoryState get() = _messagesHistoryState.asSharedFlow()
 
     fun retrieveMessages() {
-        async {
+        executeAsync {
             // Test to get messages
             val messages = MessageUiModel.messagesTestList
 
@@ -20,7 +20,7 @@ class UserViewModel : ViewModel() {
         }
     }
 
-    fun sendMessage(messageBody: String, date: String, isSentByFirstUser: Boolean) {
+    fun sendMessage(messageBody: String, date: Long, isSentByFirstUser: Boolean) {
         // Test to get messages
         MessageUiModel.id ++
         val message = MessageUiModel(MessageUiModel.id, messageBody, date, isSentByFirstUser)

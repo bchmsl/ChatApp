@@ -6,7 +6,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlin.coroutines.CoroutineContext
 
-fun ViewModel.async(
+fun ViewModel.executeAsync(
     coroutineContext: CoroutineContext = Dispatchers.Main,
     block: suspend () -> Unit
 ) {

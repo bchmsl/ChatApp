@@ -3,7 +3,7 @@ package com.bchmsl.chatapp.presentation.model
 data class MessageUiModel(
     override val id: Int,
     val message: String,
-    val sentDate: String,
+    val dateSent: Long,
     val isSentByFirstUser: Boolean
 ): ModelWithId<MessageUiModel>() {
 
