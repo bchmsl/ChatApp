@@ -9,15 +9,16 @@ import com.bchmsl.chatapp.presentation.base.BaseFragment
 import com.bchmsl.chatapp.presentation.base.Inflater
 import com.bchmsl.chatapp.presentation.model.MessageUiModel
 import com.bchmsl.chatapp.presentation.model.UserTags
-import com.bchmsl.chatapp.service.MessagesReceiver
+import com.bchmsl.chatapp.service.MessageReceiver
+import com.bchmsl.chatapp.service.Receiver
 import kotlinx.coroutines.delay
 import java.util.*
 
-class ChatFragment : BaseFragment<FragmentChatBinding, UserViewModel, MessagesReceiver>() {
+class ChatFragment : BaseFragment<FragmentChatBinding, UserViewModel>() {
 
     private val userMessagesAdapter by lazy { ChatAdapter(tag?.let { UserTags.valueOf(it) }) }
-    override val filter = IntentFilter(MessagesReceiver.ACTION)
-    override fun setReceiver(): MessagesReceiver = lazy { MessagesReceiver() }.value
+    override val filter by lazy { IntentFilter(receiver?.actionName) }
+    override fun setReceiver(): Receiver = lazy { MessageReceiver(requireActivity()) }.value
     override fun inflate(): Inflater<FragmentChatBinding> = FragmentChatBinding::inflate
     override fun provideViewModel(): Class<UserViewModel> = UserViewModel::class.java
 
@@ -47,7 +48,7 @@ class ChatFragment : BaseFragment<FragmentChatBinding, UserViewModel, MessagesRe
                 binding.rvMessageHistory.smoothScrollToPosition(userMessagesAdapter.itemCount - 1)
             }
         }
-        receiver.callback = {
+        receiver?.callback = {
             vm.retrieveMessages()
         }
     }
@@ -61,7 +62,7 @@ class ChatFragment : BaseFragment<FragmentChatBinding, UserViewModel, MessagesRe
                     tag == UserTags.FirstUser.name
                 )
                 etMessage.setText("")
-                sendBroadcast(MessagesReceiver.ACTION)
+                receiver?.let { sendBroadcast(it.actionName) }
             }
         }
     }

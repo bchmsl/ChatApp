@@ -1,7 +1,5 @@
 package com.bchmsl.chatapp.presentation.base
 
-import android.content.BroadcastReceiver
-import android.content.Intent
 import android.content.IntentFilter
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -11,22 +9,22 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.viewbinding.ViewBinding
+import com.bchmsl.chatapp.service.Receiver
 
 typealias Inflater<VB> = (inflater: LayoutInflater, container: ViewGroup, attachToRoot: Boolean) -> VB
 
-abstract class BaseFragment<VB : ViewBinding, VM : ViewModel, BR : BroadcastReceiver> : Fragment() {
+abstract class BaseFragment<VB : ViewBinding, VM : ViewModel> : Fragment() {
 
     private var _binding: VB? = null
     protected val binding get() = _binding!!
     private lateinit var vm: VM
 
     protected abstract val filter: IntentFilter
-    protected lateinit var receiver: BR
-    private val intent by lazy { Intent() }
+    protected var receiver: Receiver? = null
 
     abstract fun inflate(): Inflater<VB>
     abstract fun provideViewModel(): Class<VM>
-    abstract fun setReceiver(): BR
+    abstract fun setReceiver(): Receiver
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -62,7 +60,6 @@ abstract class BaseFragment<VB : ViewBinding, VM : ViewModel, BR : BroadcastRece
     }
 
     protected fun sendBroadcast(action: String) {
-        intent.action = action
-        requireActivity().sendBroadcast(intent)
+        receiver?.sendBroadcast(action)
     }
 }
