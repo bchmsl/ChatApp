@@ -1,7 +1,9 @@
 package com.bchmsl.chatapp.presentation.ui.chat
 
+import android.content.ContentValues.TAG
 import android.content.IntentFilter
-import com.bchmsl.chatapp.common.extensions.executeAsync
+import android.util.Log
+import com.bchmsl.chatapp.common.extensions.collectAsync
 import com.bchmsl.chatapp.common.extensions.hideKeyboard
 import com.bchmsl.chatapp.databinding.FragmentChatBinding
 import com.bchmsl.chatapp.presentation.adapter.ChatAdapter
@@ -12,7 +14,6 @@ import com.bchmsl.chatapp.presentation.model.UserTags
 import com.bchmsl.chatapp.service.MessageReceiver
 import com.bchmsl.chatapp.service.Receiver
 import kotlinx.coroutines.delay
-import java.util.*
 
 class ChatFragment : BaseFragment<FragmentChatBinding, UserViewModel>() {
 
@@ -29,6 +30,7 @@ class ChatFragment : BaseFragment<FragmentChatBinding, UserViewModel>() {
     override fun onBindViewModel(vm: UserViewModel) {
         listeners(vm)
         loadContent(vm)
+        vm.retrieveMessages()
     }
 
     private fun listeners(vm: UserViewModel) {
@@ -39,14 +41,12 @@ class ChatFragment : BaseFragment<FragmentChatBinding, UserViewModel>() {
     }
 
     private fun loadContent(vm: UserViewModel) {
-        vm.retrieveMessages()
         binding.rvMessageHistory.adapter = userMessagesAdapter
-        executeAsync {
-            vm.messagesHistoryState.collect {
-                userMessagesAdapter.submitList(MessageUiModel.messagesTestList.toList())
-                delay(100)
-                binding.rvMessageHistory.smoothScrollToPosition(userMessagesAdapter.itemCount - 1)
-            }
+        collectAsync(vm.messagesHistoryState) {
+            Log.d(TAG, "loadContent:")
+            userMessagesAdapter.submitList(MessageUiModel.messagesTestList.toList())
+            delay(DELAY)
+            binding.rvMessageHistory.smoothScrollToPosition(userMessagesAdapter.itemCount - 1)
         }
         receiver?.callback = {
             vm.retrieveMessages()
@@ -55,15 +55,22 @@ class ChatFragment : BaseFragment<FragmentChatBinding, UserViewModel>() {
 
     private fun sendMessage(vm: UserViewModel) {
         with(binding) {
-            if (!etMessage.text.isNullOrBlank()) {
+            etMessage.text?.let {
                 vm.sendMessage(
-                    etMessage.text.toString(),
-                    Calendar.getInstance().timeInMillis,
-                    tag == UserTags.FirstUser.name
+                    it,
+                    UserTags.valueOf(tag ?: "")
                 )
-                etMessage.setText("")
-                receiver?.let { sendBroadcast(it.actionName) }
+            }
+            etMessage.setText("")
+            collectAsync(vm.messageSentState) { messageSent ->
+                if (messageSent) {
+                    receiver?.let { sendBroadcast(it.actionName) }
+                }
             }
         }
+    }
+
+    companion object {
+        private const val DELAY = 100L
     }
 }

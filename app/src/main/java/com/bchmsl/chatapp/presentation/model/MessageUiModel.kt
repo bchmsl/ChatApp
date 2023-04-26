@@ -4,7 +4,7 @@ data class MessageUiModel(
     override val id: Int,
     val message: String,
     val dateSent: Long,
-    val isSentByFirstUser: Boolean
+    val sentBy: UserTags
 ): ModelWithId<MessageUiModel>() {
 
 

@@ -18,6 +18,19 @@ typealias C = R.color
 class ChatAdapter(private val user: UserTags?) :
     ListAdapter<MessageUiModel, ChatAdapter.MessageViewHolder>(CustomItemCallback<MessageUiModel>()) {
 
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MessageViewHolder =
+        MessageViewHolder(
+            LayoutMessageItemBinding.inflate(
+                LayoutInflater.from(parent.context),
+                parent,
+                false
+            )
+        )
+
+    override fun onBindViewHolder(holder: MessageViewHolder, position: Int) {
+        holder.bind(getItem(position), user)
+    }
+
     class MessageViewHolder(private val binding: LayoutMessageItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
@@ -26,9 +39,7 @@ class ChatAdapter(private val user: UserTags?) :
                 with(binding) {
                     tvMessage.text = message.message
                     tvDate.text = message.dateSent.toFormattedDate()
-                    val isSentMessage =
-                        (user == UserTags.FirstUser && message.isSentByFirstUser) ||
-                                (user == UserTags.SecondUser && !message.isSentByFirstUser)
+                    val isSentMessage = (user == message.sentBy)
 
                     setScale(
                         if (isSentMessage) 1f else -1f,
@@ -56,18 +67,5 @@ class ChatAdapter(private val user: UserTags?) :
                 }
             }
         }
-    }
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MessageViewHolder =
-        MessageViewHolder(
-            LayoutMessageItemBinding.inflate(
-                LayoutInflater.from(parent.context),
-                parent,
-                false
-            )
-        )
-
-    override fun onBindViewHolder(holder: MessageViewHolder, position: Int) {
-        holder.bind(getItem(position), user)
     }
 }

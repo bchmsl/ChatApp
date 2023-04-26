@@ -1,7 +1,9 @@
 package com.bchmsl.chatapp.presentation.base
 
+import android.content.ContentValues.TAG
 import android.content.IntentFilter
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -46,7 +48,7 @@ abstract class BaseFragment<VB : ViewBinding, VM : ViewModel> : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         onBindViewModel(vm)
         onBind()
-
+        Log.d(TAG, "onViewCreated")
     }
 
     abstract fun onBind()
