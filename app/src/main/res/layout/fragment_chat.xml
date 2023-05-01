@@ -38,7 +38,7 @@
             android:layout_height="match_parent"
             android:hint="@string/prompt_enter_message"
             android:paddingEnd="@dimen/dimen_56_dp"
-            tools:text="გაგიმარჯოს გენაცვალე!" />
+            tools:text="@tools:sample/lorem" />
 
     </com.google.android.material.textfield.TextInputLayout>
 

@@ -32,9 +32,7 @@ class ChatViewModel(
     fun sendMessage(etMessage: Editable, user: UserTags) {
         executeAsync(Dispatchers.IO) {
             if (etMessage.toString().isNotBlank()) {
-                MessageModel.id++
                 val message = MessageModel(
-                    MessageModel.id,
                     etMessage.toString(),
                     Calendar.getInstance().timeInMillis,
                     user
