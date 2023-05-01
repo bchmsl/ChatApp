@@ -5,10 +5,11 @@
     android:layout_height="match_parent"
     android:background="?attr/background"
     android:orientation="horizontal"
-    tools:context=".presentation.MainActivity">
+    tools:context=".presentation.ChatActivity">
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/fcvFirst"
+        tools:layout="@layout/fragment_chat"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="1" />
@@ -16,12 +17,23 @@
     <View
         android:layout_width="@dimen/dimen_4_dp"
         android:layout_height="match_parent"
-        android:background="@color/light_yellow"/>
+        android:background="@color/yellow"/>
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/fcvSecond"
+        tools:layout="@layout/fragment_chat"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="1" />
+
+    <androidx.appcompat.widget.AppCompatToggleButton
+        android:id="@+id/tbtnSwitch"
+        android:layout_width="@dimen/dimen_64_dp"
+        android:layout_height="@dimen/dimen_32_dp"
+        android:layout_gravity="top"
+        android:layout_margin="@dimen/dimen_20_dp"
+        android:background="@drawable/ic_switch"
+        android:textOff=""
+        android:textOn="" />
 
 </androidx.appcompat.widget.LinearLayoutCompat>

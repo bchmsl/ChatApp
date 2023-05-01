@@ -12,7 +12,7 @@
         android:theme="@style/Theme.ChatApp"
         tools:targetApi="31">
         <activity
-            android:name=".presentation.MainActivity"
+            android:name=".presentation.ChatActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

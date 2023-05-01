@@ -8,13 +8,15 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
 
-    <color name="dark_blue">#160039</color>
-    <color name="light_violet">#DAC2FF</color>
-    <color name="extra_light_gray">#F1F1F1</color>
-    <color name="gray">#C7C7C7</color>
-    <color name="light_gray">#74C7C7C7</color>
-    <color name="extra_dark_gray">#191919</color>
-    <color name="violet">#9F60FF</color>
-    <color name="light_yellow">#F7CE7F</color>
+    <color name="purple_default">#9F60FF</color>
+    <color name="purple_light">#DAC2FF</color>
+    <color name="neutral_01">#191919</color>
+    <color name="neutral_02">#C7C7C7</color>
+    <color name="neutral_03">#DADADA</color>
+    <color name="neutral_05">#F1F1F1</color>
+    <color name="dark_01">#160039</color>
+    <color name="dark_02">#2e0072</color>
+    <color name="yellow">#F7CE7F</color>
+
 
 </resources>
