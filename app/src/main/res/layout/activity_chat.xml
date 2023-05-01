@@ -14,8 +14,11 @@
         android:layout_gravity="end"
         android:layout_margin="@dimen/dimen_20_dp"
         android:background="@drawable/ic_switch"
+        android:checked="true"
         android:textOff=""
         android:textOn="" />
+
+
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/fcvFirst"
