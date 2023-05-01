@@ -5,11 +5,11 @@ plugins {
 }
 
 android {
-    namespace 'com.bchmsl.chatapp'
+    namespace 'com.space_intl.chatapp'
     compileSdk 33
 
     defaultConfig {
-        applicationId "com.bchmsl.chatapp"
+        applicationId "com.space_intl.chatapp"
         minSdk 24
         targetSdk 33
         versionCode 1
