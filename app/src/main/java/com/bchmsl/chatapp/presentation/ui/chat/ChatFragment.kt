@@ -6,45 +6,42 @@ import android.util.Log
 import com.bchmsl.chatapp.common.extensions.collectAsync
 import com.bchmsl.chatapp.common.extensions.hideKeyboard
 import com.bchmsl.chatapp.databinding.FragmentChatBinding
+import com.bchmsl.chatapp.domain.model.MessageModel
 import com.bchmsl.chatapp.presentation.adapter.ChatAdapter
 import com.bchmsl.chatapp.presentation.base.BaseFragment
 import com.bchmsl.chatapp.presentation.base.Inflater
-import com.bchmsl.chatapp.presentation.model.MessageUiModel
 import com.bchmsl.chatapp.presentation.model.UserTags
 import com.bchmsl.chatapp.service.MessageReceiver
 import com.bchmsl.chatapp.service.Receiver
 import kotlinx.coroutines.delay
+import kotlin.reflect.KClass
 
-class ChatFragment : BaseFragment<FragmentChatBinding, UserViewModel>() {
-
+class ChatFragment : BaseFragment<FragmentChatBinding, ChatViewModel>() {
     private val userMessagesAdapter by lazy { ChatAdapter(tag?.let { UserTags.valueOf(it) }) }
     override val filter by lazy { IntentFilter(receiver?.actionName) }
     override fun setReceiver(): Receiver = lazy { MessageReceiver(requireActivity()) }.value
     override fun inflate(): Inflater<FragmentChatBinding> = FragmentChatBinding::inflate
-    override fun provideViewModel(): Class<UserViewModel> = UserViewModel::class.java
 
-    override fun onBind() {
+    override val vmc: KClass<ChatViewModel> get() = ChatViewModel::class
 
-    }
-
-    override fun onBindViewModel(vm: UserViewModel) {
+    override fun onBindViewModel(vm: ChatViewModel) {
         listeners(vm)
         loadContent(vm)
         vm.retrieveMessages()
     }
 
-    private fun listeners(vm: UserViewModel) {
+    private fun listeners(vm: ChatViewModel) {
         binding.btnSend.setOnClickListener {
             sendMessage(vm)
             requireActivity().hideKeyboard(binding.root)
         }
     }
 
-    private fun loadContent(vm: UserViewModel) {
+    private fun loadContent(vm: ChatViewModel) {
         binding.rvMessageHistory.adapter = userMessagesAdapter
         collectAsync(vm.messagesHistoryState) {
             Log.d(TAG, "loadContent:")
-            userMessagesAdapter.submitList(MessageUiModel.messagesTestList.toList())
+            userMessagesAdapter.submitList(MessageModel.messagesTestList.toList())
             delay(DELAY)
             binding.rvMessageHistory.smoothScrollToPosition(userMessagesAdapter.itemCount - 1)
         }
@@ -53,7 +50,7 @@ class ChatFragment : BaseFragment<FragmentChatBinding, UserViewModel>() {
         }
     }
 
-    private fun sendMessage(vm: UserViewModel) {
+    private fun sendMessage(vm: ChatViewModel) {
         with(binding) {
             etMessage.text?.let {
                 vm.sendMessage(

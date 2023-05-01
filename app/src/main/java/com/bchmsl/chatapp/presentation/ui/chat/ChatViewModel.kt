@@ -1,20 +1,21 @@
 package com.bchmsl.chatapp.presentation.ui.chat
 
-import android.content.ContentValues.TAG
 import android.text.Editable
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import com.bchmsl.chatapp.common.extensions.executeAsync
-import com.bchmsl.chatapp.presentation.model.MessageUiModel
+import com.bchmsl.chatapp.domain.model.MessageModel
+import com.bchmsl.chatapp.domain.repository.ChatRepository
 import com.bchmsl.chatapp.presentation.model.UserTags
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import java.util.*
 
-class UserViewModel : ViewModel() {
+class ChatViewModel(
+    private val chatRepository: ChatRepository
+) : ViewModel() {
 
-    private val _messagesHistoryState = MutableSharedFlow<List<MessageUiModel>>()
+    private val _messagesHistoryState = MutableSharedFlow<List<MessageModel>>()
     val messagesHistoryState get() = _messagesHistoryState.asSharedFlow()
 
     private val _messageSentState = MutableStateFlow(false)
@@ -22,26 +23,23 @@ class UserViewModel : ViewModel() {
 
     fun retrieveMessages() {
         executeAsync {
-            // Test to get messages
-            val messages = MessageUiModel.messagesTestList
-
-            _messagesHistoryState.emit(messages)
+            chatRepository.retrieveMessages().collect {messages ->
+                _messagesHistoryState.emit(messages)
+            }
         }
-        Log.d(TAG, "retrieveMessages")
     }
 
     fun sendMessage(etMessage: Editable, user: UserTags) {
-        // Test to get messages
         executeAsync {
             if (etMessage.toString().isNotBlank()) {
-                MessageUiModel.id++
-                val message = MessageUiModel(
-                    MessageUiModel.id,
+                MessageModel.id++
+                val message = MessageModel(
+                    MessageModel.id,
                     etMessage.toString(),
                     Calendar.getInstance().timeInMillis,
                     user
                 )
-                MessageUiModel.messagesTestList.add(message)
+                chatRepository.saveMessage(message)
                 _messageSentState.emit(true)
             }
         }

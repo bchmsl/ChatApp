@@ -10,13 +10,13 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bchmsl.chatapp.R
 import com.bchmsl.chatapp.common.extensions.*
 import com.bchmsl.chatapp.databinding.LayoutMessageItemBinding
-import com.bchmsl.chatapp.presentation.model.MessageUiModel
+import com.bchmsl.chatapp.domain.model.MessageModel
 import com.bchmsl.chatapp.presentation.model.UserTags
 
 typealias C = R.color
 
 class ChatAdapter(private val user: UserTags?) :
-    ListAdapter<MessageUiModel, ChatAdapter.MessageViewHolder>(CustomItemCallback<MessageUiModel>()) {
+    ListAdapter<MessageModel, ChatAdapter.MessageViewHolder>(CustomItemCallback<MessageModel>()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MessageViewHolder =
         MessageViewHolder(
@@ -34,7 +34,7 @@ class ChatAdapter(private val user: UserTags?) :
     class MessageViewHolder(private val binding: LayoutMessageItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(message: MessageUiModel, user: UserTags?) {
+        fun bind(message: MessageModel, user: UserTags?) {
             user?.let {
                 with(binding) {
                     tvMessage.text = message.message
