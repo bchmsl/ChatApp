@@ -19,7 +19,7 @@ class ChatFragment : BaseFragment<FragmentChatBinding, ChatViewModel>() {
     override fun setReceiver(): Receiver = lazy { MessageReceiver(requireActivity()) }.value
     override fun inflate(): Inflater<FragmentChatBinding> = FragmentChatBinding::inflate
 
-    override val vmc: KClass<ChatViewModel> get() = ChatViewModel::class
+    override val viewModelClass: KClass<ChatViewModel> get() = ChatViewModel::class
 
     override fun onBindViewModel(vm: ChatViewModel) {
         vm.retrieveMessages()

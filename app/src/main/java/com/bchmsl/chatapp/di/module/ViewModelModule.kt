@@ -4,8 +4,7 @@ import com.bchmsl.chatapp.presentation.ui.chat.ChatViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
-object ViewModelModule {
-    val viewModelModule = module {
-        viewModel { ChatViewModel(get()) }
-    }
+val viewModelModule = module {
+    viewModel { ChatViewModel(get()) }
 }
+

@@ -8,8 +8,8 @@ import com.bchmsl.chatapp.data.local.model.MessageEntity
 @Dao
 interface MessageDao {
     @Query("SELECT * FROM chat")
-    fun retrieveAll(): List<MessageEntity>
+    suspend fun retrieveAll(): List<MessageEntity>
 
     @Insert
-    fun insertMessage(messageEntity: MessageEntity)
+    suspend fun insertMessage(messageEntity: MessageEntity)
 }

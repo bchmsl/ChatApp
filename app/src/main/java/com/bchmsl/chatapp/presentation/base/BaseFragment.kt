@@ -19,8 +19,8 @@ abstract class BaseFragment<VB : ViewBinding, VM : ViewModel> : Fragment() {
     private var _binding: VB? = null
     protected val binding get() = _binding!!
 
-    abstract val vmc: KClass<VM>
-    private val vm: VM by viewModelForClass(clazz = vmc)
+    abstract val viewModelClass: KClass<VM>
+    private val vm: VM by viewModelForClass(clazz = viewModelClass)
 
     protected abstract val filter: IntentFilter
     protected var receiver: Receiver? = null
