@@ -37,17 +37,17 @@ class ChatAdapter(private val user: UserTags?) :
         fun bind(message: MessageModel, user: UserTags?) {
             user?.let {
                 with(binding) {
-                    tvMessage.text = message.message
-                    tvDate.text = message.dateSent.toFormattedDate()
+                    messageTextView.text = message.message
+                    dateTextView.text = message.dateSent.toFormattedDate()
                     val isSentMessage = (user == message.sentBy)
 
                     setScale(
                         if (isSentMessage) 1f else -1f,
-                        root, tvMessage, tvDate
+                        root, messageTextView, dateTextView
                     )
                     setColor(
                         if (isSentMessage) C.purple_light else C.neutral_05,
-                        ivCircleSmall, ivCircleBig, tvMessage
+                        smallCircleImageView, bigCircleImageView, messageTextView
                     )
                 }
             }

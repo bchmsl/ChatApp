@@ -27,8 +27,8 @@ class ChatActivity : AppCompatActivity() {
 
     private fun switchListener() {
         with(binding) {
-            tbtnSwitch.setOnClickListener {
-                checkSwitchState(tbtnSwitch)
+            switchToggleButton.setOnClickListener {
+                checkSwitchState(switchToggleButton)
             }
         }
     }
@@ -47,11 +47,11 @@ class ChatActivity : AppCompatActivity() {
     private fun setupFragments(savedInstanceState: Bundle?) {
         supportFragmentManager.beginTransaction().apply {
             if (savedInstanceState == null) {
-                add(binding.fcvFirst.id, ChatFragment(), UserTags.FirstUser.name)
-                add(binding.fcvSecond.id, ChatFragment(), UserTags.SecondUser.name)
+                add(binding.firstFragmentContainer.id, ChatFragment(), UserTags.FirstUser.name)
+                add(binding.secondFragmentContainer.id, ChatFragment(), UserTags.SecondUser.name)
             } else {
-                replace(binding.fcvFirst.id, ChatFragment(), UserTags.FirstUser.name)
-                replace(binding.fcvSecond.id, ChatFragment(), UserTags.SecondUser.name)
+                replace(binding.firstFragmentContainer.id, ChatFragment(), UserTags.FirstUser.name)
+                replace(binding.secondFragmentContainer.id, ChatFragment(), UserTags.SecondUser.name)
             }
         }.commit()
     }

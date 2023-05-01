@@ -28,18 +28,18 @@ class ChatFragment : BaseFragment<FragmentChatBinding, ChatViewModel>() {
     }
 
     private fun listeners(vm: ChatViewModel) {
-        binding.btnSend.setOnClickListener {
+        binding.sendButton.setOnClickListener {
             sendMessage(vm)
             requireActivity().hideKeyboard(binding.root)
         }
     }
 
     private fun loadContent(vm: ChatViewModel) {
-        binding.rvMessageHistory.adapter = userMessagesAdapter
+        binding.chatRecyclerView.adapter = userMessagesAdapter
         collectAsync(vm.messagesHistoryState) {messages ->
             userMessagesAdapter.submitList(messages.toList())
             delay(DELAY)
-            binding.rvMessageHistory.scrollToPosition(messages.size-1)
+            binding.chatRecyclerView.scrollToPosition(messages.size-1)
         }
         receiver?.callback = {
             vm.retrieveMessages()
@@ -48,13 +48,13 @@ class ChatFragment : BaseFragment<FragmentChatBinding, ChatViewModel>() {
 
     private fun sendMessage(vm: ChatViewModel) {
         with(binding) {
-            etMessage.text?.let {
+            messageEditText.text?.let {
                 vm.sendMessage(
                     it,
                     UserTags.valueOf(tag ?: "")
                 )
             }
-            etMessage.setText("")
+            messageEditText.setText("")
             collectAsync(vm.messageSentState) { messageSent ->
                 if (messageSent) {
                     receiver?.let { sendBroadcast(it.actionName) }

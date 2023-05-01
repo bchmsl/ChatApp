@@ -8,13 +8,13 @@
     tools:ignore="RtlSymmetry">
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvMessageHistory"
+        android:id="@+id/chatRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="@dimen/dimen_0_dp"
         android:clipToPadding="false"
         android:paddingVertical="@dimen/dimen_18_dp"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        app:layout_constraintBottom_toTopOf="@id/tilMessage"
+        app:layout_constraintBottom_toTopOf="@id/messageTextInputLayout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -23,7 +23,7 @@
         tools:listitem="@layout/layout_message_item" />
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/tilMessage"
+        android:id="@+id/messageTextInputLayout"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.MessageTextInputLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -32,7 +32,7 @@
         app:layout_constraintBottom_toBottomOf="parent">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/etMessage"
+            android:id="@+id/messageEditText"
             style="@style/Base.Widget.MaterialComponents.TextInputEditText.MessageTextInputEditText"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -43,15 +43,15 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <androidx.appcompat.widget.AppCompatImageButton
-        android:id="@+id/btnSend"
+        android:id="@+id/sendButton"
         android:layout_width="@dimen/dimen_55_dp"
         android:layout_height="@dimen/dimen_0_dp"
         android:background="@android:color/transparent"
         android:padding="@dimen/dimen_10_dp"
         android:scaleType="fitCenter"
         android:src="@drawable/button_send"
-        app:layout_constraintBottom_toBottomOf="@id/tilMessage"
+        app:layout_constraintBottom_toBottomOf="@id/messageTextInputLayout"
         app:layout_constraintDimensionRatio="1"
-        app:layout_constraintEnd_toEndOf="@id/tilMessage" />
+        app:layout_constraintEnd_toEndOf="@id/messageTextInputLayout" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
