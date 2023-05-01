@@ -7,13 +7,15 @@ import com.bchmsl.chatapp.domain.model.MessageModel
 import com.bchmsl.chatapp.domain.repository.ChatRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.map
 
 class ChatRepositoryImpl(
     private val dao: MessageDao
 ) : ChatRepository {
-    override suspend fun retrieveMessages(): Flow<List<MessageModel>> = flow {
-        emit(dao.retrieveAll().map { it.toMessage() })
-    }
+    override fun retrieveMessages(): Flow<List<MessageModel>> =
+        dao.retrieveAll().map {entities ->
+            entities.map { entity -> entity.toMessage()}
+        }
 
     override suspend fun saveMessage(messageModel: MessageModel) {
         dao.insertMessage(messageModel.toEntity())

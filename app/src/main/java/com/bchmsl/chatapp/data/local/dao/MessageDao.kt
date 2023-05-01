@@ -4,11 +4,12 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
 import com.bchmsl.chatapp.data.local.model.MessageEntity
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface MessageDao {
     @Query("SELECT * FROM chat")
-    suspend fun retrieveAll(): List<MessageEntity>
+    fun retrieveAll(): Flow<List<MessageEntity>>
 
     @Insert
     suspend fun insertMessage(messageEntity: MessageEntity)
