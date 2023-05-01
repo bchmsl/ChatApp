@@ -6,23 +6,23 @@ import com.bchmsl.chatapp.common.extensions.executeAsync
 import com.bchmsl.chatapp.domain.model.MessageModel
 import com.bchmsl.chatapp.domain.repository.ChatRepository
 import com.bchmsl.chatapp.presentation.model.UserTags
-import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.flow.asStateFlow
 import java.util.*
 
 class ChatViewModel(
     private val chatRepository: ChatRepository
 ) : ViewModel() {
 
-    private val _messagesHistoryState = MutableSharedFlow<List<MessageModel>>()
-    val messagesHistoryState get() = _messagesHistoryState.asSharedFlow()
+    private val _messagesHistoryState = MutableStateFlow<List<MessageModel>>(emptyList())
+    val messagesHistoryState get() = _messagesHistoryState.asStateFlow()
 
     private val _messageSentState = MutableStateFlow(false)
     val messageSentState get() = _messageSentState
 
     fun retrieveMessages() {
-        executeAsync {
+        executeAsync(Dispatchers.IO) {
             chatRepository.retrieveMessages().collect {messages ->
                 _messagesHistoryState.emit(messages)
             }
@@ -30,7 +30,7 @@ class ChatViewModel(
     }
 
     fun sendMessage(etMessage: Editable, user: UserTags) {
-        executeAsync {
+        executeAsync(Dispatchers.IO) {
             if (etMessage.toString().isNotBlank()) {
                 MessageModel.id++
                 val message = MessageModel(

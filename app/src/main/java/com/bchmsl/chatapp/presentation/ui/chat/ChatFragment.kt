@@ -1,12 +1,9 @@
 package com.bchmsl.chatapp.presentation.ui.chat
 
-import android.content.ContentValues.TAG
 import android.content.IntentFilter
-import android.util.Log
 import com.bchmsl.chatapp.common.extensions.collectAsync
 import com.bchmsl.chatapp.common.extensions.hideKeyboard
 import com.bchmsl.chatapp.databinding.FragmentChatBinding
-import com.bchmsl.chatapp.domain.model.MessageModel
 import com.bchmsl.chatapp.presentation.adapter.ChatAdapter
 import com.bchmsl.chatapp.presentation.base.BaseFragment
 import com.bchmsl.chatapp.presentation.base.Inflater
@@ -25,9 +22,9 @@ class ChatFragment : BaseFragment<FragmentChatBinding, ChatViewModel>() {
     override val vmc: KClass<ChatViewModel> get() = ChatViewModel::class
 
     override fun onBindViewModel(vm: ChatViewModel) {
+        vm.retrieveMessages()
         listeners(vm)
         loadContent(vm)
-        vm.retrieveMessages()
     }
 
     private fun listeners(vm: ChatViewModel) {
@@ -39,11 +36,10 @@ class ChatFragment : BaseFragment<FragmentChatBinding, ChatViewModel>() {
 
     private fun loadContent(vm: ChatViewModel) {
         binding.rvMessageHistory.adapter = userMessagesAdapter
-        collectAsync(vm.messagesHistoryState) {
-            Log.d(TAG, "loadContent:")
-            userMessagesAdapter.submitList(MessageModel.messagesTestList.toList())
+        collectAsync(vm.messagesHistoryState) {messages ->
+            userMessagesAdapter.submitList(messages.toList())
             delay(DELAY)
-            binding.rvMessageHistory.smoothScrollToPosition(userMessagesAdapter.itemCount - 1)
+            binding.rvMessageHistory.scrollToPosition(messages.size-1)
         }
         receiver?.callback = {
             vm.retrieveMessages()
