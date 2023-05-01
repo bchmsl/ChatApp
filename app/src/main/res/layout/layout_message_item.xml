@@ -8,7 +8,7 @@
     android:scaleX="1">
 
     <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/ivCircleSmall"
+        android:id="@+id/smallCircleImageView"
         android:layout_width="@dimen/dimen_10_dp"
         android:layout_height="@dimen/dimen_0_dp"
         android:src="@drawable/shape_circle"
@@ -16,11 +16,11 @@
         android:translationX="@dimen/dimen_neg_15_dp"
         android:translationY="@dimen/dimen_neg_15_dp"
         app:layout_constraintDimensionRatio="1"
-        app:layout_constraintStart_toEndOf="@+id/ivCircleBig"
-        app:layout_constraintTop_toBottomOf="@+id/ivCircleBig" />
+        app:layout_constraintStart_toEndOf="@+id/bigCircleImageView"
+        app:layout_constraintTop_toBottomOf="@+id/bigCircleImageView" />
 
     <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/ivCircleBig"
+        android:id="@+id/bigCircleImageView"
         android:layout_width="@dimen/dimen_18_dp"
         android:layout_height="@dimen/dimen_0_dp"
         android:src="@drawable/shape_circle"
@@ -28,11 +28,11 @@
         android:translationX="@dimen/dimen_neg_15_dp"
         android:translationY="@dimen/dimen_neg_15_dp"
         app:layout_constraintDimensionRatio="1"
-        app:layout_constraintStart_toEndOf="@+id/tvMessage"
-        app:layout_constraintTop_toBottomOf="@+id/tvMessage" />
+        app:layout_constraintStart_toEndOf="@+id/messageTextView"
+        app:layout_constraintTop_toBottomOf="@+id/messageTextView" />
 
     <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/tvMessage"
+        android:id="@+id/messageTextView"
         style="@style/Base.Widget.AppCompat.TextView.MessageTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -42,18 +42,18 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:text="გამარჯობა ზეზვა!" />
+        tools:text="@tools:sample/lorem" />
 
     <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/tvDate"
+        android:id="@+id/dateTextView"
         style="@style/Base.Widget.AppCompat.TextView.TimeDeliveredTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:scaleX="1"
         android:translationX="@dimen/dimen_neg_25_dp"
-        app:layout_constraintEnd_toEndOf="@+id/tvMessage"
-        app:layout_constraintTop_toBottomOf="@+id/tvMessage"
+        app:layout_constraintEnd_toEndOf="@+id/messageTextView"
+        app:layout_constraintTop_toBottomOf="@+id/messageTextView"
         tools:ignore="SmallSp"
-        tools:text="დღეს 16:12" />
+        tools:text="@tools:sample/date/hhmm" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

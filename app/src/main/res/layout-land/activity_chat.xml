@@ -8,7 +8,7 @@
     tools:context=".presentation.ChatActivity">
 
     <androidx.fragment.app.FragmentContainerView
-        android:id="@+id/fcvFirst"
+        android:id="@+id/firstFragmentContainer"
         tools:layout="@layout/fragment_chat"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -20,14 +20,14 @@
         android:background="@color/yellow"/>
 
     <androidx.fragment.app.FragmentContainerView
-        android:id="@+id/fcvSecond"
+        android:id="@+id/secondFragmentContainer"
         tools:layout="@layout/fragment_chat"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="1" />
 
     <androidx.appcompat.widget.AppCompatToggleButton
-        android:id="@+id/tbtnSwitch"
+        android:id="@+id/switchToggleButton"
         android:layout_width="@dimen/dimen_64_dp"
         android:layout_height="@dimen/dimen_32_dp"
         android:layout_gravity="top"
