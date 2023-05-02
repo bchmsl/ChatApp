@@ -1,4 +1,4 @@
-package com.space_intl.chatapp.presentation.ui.chat.vm
+package com.space_intl.chatapp.presentation.ui.chat.viewmodel
 
 import androidx.lifecycle.ViewModel
 import com.space_intl.chatapp.common.extensions.executeAsync

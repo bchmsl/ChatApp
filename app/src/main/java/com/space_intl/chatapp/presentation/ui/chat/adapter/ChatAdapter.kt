@@ -19,6 +19,15 @@ typealias C = R.color
 class ChatAdapter(listener: AdapterListener) :
     BaseAdapter<MessageModel, LayoutMessageItemBinding, ChatAdapter.ChatViewHolder>(listener) {
 
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ChatViewHolder =
+        ChatViewHolder(
+            LayoutMessageItemBinding.inflate(
+                LayoutInflater.from(parent.context),
+                parent,
+                false
+            )
+        )
+
     class ChatViewHolder(private val binding: LayoutMessageItemBinding) :
         BaseViewHolder<MessageModel, LayoutMessageItemBinding>(binding) {
 
@@ -54,13 +63,4 @@ class ChatAdapter(listener: AdapterListener) :
             }
         }
     }
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ChatViewHolder =
-        ChatViewHolder(
-            LayoutMessageItemBinding.inflate(
-                LayoutInflater.from(parent.context),
-                parent,
-                false
-            )
-        )
 }
