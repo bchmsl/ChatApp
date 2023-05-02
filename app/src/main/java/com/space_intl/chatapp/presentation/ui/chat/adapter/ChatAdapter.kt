@@ -18,8 +18,9 @@ import com.space_intl.chatapp.presentation.base.adapter.BaseAdapter
 typealias C = R.color
 typealias S = R.string
 
-class ChatAdapter(listener: () -> String) :
+class ChatAdapter(listener: AdapterListener) :
     BaseAdapter<MessageModel, LayoutMessageItemBinding, ChatAdapter.ChatViewHolder>(listener) {
+
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ChatViewHolder =
         ChatViewHolder(
@@ -33,11 +34,9 @@ class ChatAdapter(listener: () -> String) :
     class ChatViewHolder(private val binding: LayoutMessageItemBinding) :
         BaseViewHolder<MessageModel, LayoutMessageItemBinding>(binding) {
 
-        override fun onBind(item: MessageModel, listener: () -> String) {
+        override fun onBind(item: MessageModel, listener: AdapterListener) {
             with(binding) {
-                messageTextView.text = item.message
-                dateTextView.text = item.dateSent.toFormattedDate()
-                val isSentMessage = (listener.invoke() == item.userId)
+                val isSentMessage = (listener.getUserId() == item.userId)
 
                 messageTextView.text = item.message
                 dateTextView.text =
