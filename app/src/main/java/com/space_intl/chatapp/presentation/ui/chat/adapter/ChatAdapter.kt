@@ -5,15 +5,18 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.annotation.ColorRes
 import com.space_intl.chatapp.R
 import com.space_intl.chatapp.common.extensions.setBackgroundTint
 import com.space_intl.chatapp.common.extensions.setTint
 import com.space_intl.chatapp.common.extensions.toFormattedDate
 import com.space_intl.chatapp.databinding.LayoutMessageItemBinding
 import com.space_intl.chatapp.domain.model.MessageModel
+import com.space_intl.chatapp.presentation.base.adapter.AdapterListener
 import com.space_intl.chatapp.presentation.base.adapter.BaseAdapter
 
 typealias C = R.color
+typealias S = R.string
 
 class ChatAdapter(listener: () -> String) :
     BaseAdapter<MessageModel, LayoutMessageItemBinding, ChatAdapter.ChatViewHolder>(listener) {
@@ -36,30 +39,72 @@ class ChatAdapter(listener: () -> String) :
                 dateTextView.text = item.dateSent.toFormattedDate()
                 val isSentMessage = (listener.invoke() == item.userId)
 
-                setScale(
-                    if (isSentMessage) 1f else -1f,
+                messageTextView.text = item.message
+                dateTextView.text =
+                    if (item.isDelivered) item.dateSent.toFormattedDate() else dateTextView.context.getString(
+                        S.not_delivered
+                    )
+
+                setScaleX(
+                    if (isSentMessage) DIRECTION_LTR else DIRECTION_RTL,
                     root, messageTextView, dateTextView
                 )
+
                 setColor(
-                    if (isSentMessage) C.purple_light else C.neutral_05,
+                    if (isSentMessage) COLOR_SENT else COLOR_RECEIVED,
                     smallCircleImageView, bigCircleImageView, messageTextView
                 )
+
+                setTextColor(
+                    if (item.isDelivered) COLOR_DATE else COLOR_ERROR,
+                    dateTextView
+                )
+
+                setAlpha(
+                    if (item.isDelivered) OPACITY_FULL else OPACITY_HALF,
+                    root
+                )
+
             }
         }
 
-        private fun setScale(scale: Float, vararg views: View) {
-            views.forEach { view ->
-                view.scaleX = scale
+        private fun setScaleX(scale: Float, vararg views: View) {
+            views.forEach { v ->
+                v.scaleX = scale
             }
         }
 
-        private fun setColor(color: Int, vararg views: View) {
-            views.forEach { view ->
-                when (view) {
-                    is ImageView -> view.setTint(color)
-                    is TextView -> view.setBackgroundTint(color)
+        private fun setAlpha(alpha: Float, vararg views: View) {
+            views.forEach { v ->
+                v.alpha = alpha
+            }
+        }
+
+        private fun setColor(@ColorRes color: Int, vararg views: View) {
+            views.forEach { v ->
+                when (v) {
+                    is TextView -> v.setBackgroundTint(color)
+                    is ImageView -> v.setTint(color)
                 }
             }
+        }
+
+        private fun setTextColor(@ColorRes color: Int, vararg textViews: TextView) {
+            textViews.forEach { t ->
+                t.setTextColor(t.context.getColor(color))
+            }
+        }
+
+        companion object {
+            private const val DIRECTION_LTR = 1f
+            private const val DIRECTION_RTL = -1f
+            private const val OPACITY_FULL = 1f
+            private const val OPACITY_HALF = 0.5f
+            private const val COLOR_SENT = C.purple_light
+            private const val COLOR_RECEIVED = C.neutral_02
+            private const val COLOR_DATE = C.neutral_02
+            private const val COLOR_ERROR = C.red
+
         }
     }
 }
