@@ -3,12 +3,14 @@ package com.space_intl.chatapp.presentation.ui.chat.fragment
 import android.content.IntentFilter
 import com.space_intl.chatapp.common.extensions.collectAsync
 import com.space_intl.chatapp.common.extensions.hideKeyboard
+import com.space_intl.chatapp.common.extensions.isOnline
 import com.space_intl.chatapp.common.extensions.scrollToBottom
 import com.space_intl.chatapp.databinding.FragmentChatBinding
+import com.space_intl.chatapp.domain.model.MessageModel
 import com.space_intl.chatapp.presentation.base.fragment.BaseChatFragment
 import com.space_intl.chatapp.presentation.base.fragment.Inflater
-import com.space_intl.chatapp.presentation.ui.chat.viewmodel.ChatViewModel
 import com.space_intl.chatapp.presentation.ui.chat.adapter.ChatAdapter
+import com.space_intl.chatapp.presentation.ui.chat.viewmodel.ChatViewModel
 import com.space_intl.chatapp.service.MessageReceiver
 import com.space_intl.chatapp.service.Receiver
 import kotlinx.coroutines.delay
@@ -37,9 +39,12 @@ class ChatFragment : BaseChatFragment<FragmentChatBinding, ChatViewModel>() {
     }
 
     private fun loadContent(vm: ChatViewModel) {
-        binding.chatRecyclerView.adapter = userMessagesAdapter
+        binding.chatRecyclerView.apply {
+            adapter = userMessagesAdapter
+            itemAnimator = null
+        }
         collectAsync(vm.messagesHistoryState) { messages ->
-            userMessagesAdapter.submitList(messages.toList())
+            userMessagesAdapter.submitList(filterMessages(messages).toList())
             delay(DELAY)
             binding.chatRecyclerView.scrollToBottom()
         }
@@ -48,12 +53,21 @@ class ChatFragment : BaseChatFragment<FragmentChatBinding, ChatViewModel>() {
         }
     }
 
+    private fun filterMessages(messages: List<MessageModel>): List<MessageModel> {
+        return messages.filter {
+            val isMessageSent = it.userId == userId
+            val isMessageShown = (!it.isDelivered && isMessageSent) || it.isDelivered
+            isMessageShown
+        }
+    }
+
     private fun sendMessage(vm: ChatViewModel) {
         with(binding) {
             messageEditText.text?.let {
                 vm.sendMessage(
                     it.toString(),
-                    userId
+                    userId,
+                    requireContext().isOnline()
                 )
             }
             messageEditText.setText("")

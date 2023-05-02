@@ -8,12 +8,14 @@ fun MessageEntity.toMessage(): MessageModel =
         id = id,
         message = message,
         dateSent = dateSent,
-        userId = userId
+        userId = userId,
+        isDelivered = isDelivered
     )
 
 fun MessageModel.toEntity(): MessageEntity =
     MessageEntity(
         message = message,
         dateSent = dateSent,
-        userId = userId
+        userId = userId,
+        isDelivered = isDelivered
     )

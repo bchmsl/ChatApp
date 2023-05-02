@@ -6,5 +6,6 @@ data class MessageModel(
     val message: String,
     val dateSent: Long,
     val userId: String,
+    val isDelivered: Boolean = true,
     override val id: Int = 0
 ): ModelWithId<MessageModel>()

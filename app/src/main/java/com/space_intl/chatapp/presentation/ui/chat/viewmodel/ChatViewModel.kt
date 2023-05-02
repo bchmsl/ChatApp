@@ -27,13 +27,14 @@ class ChatViewModel(
         }
     }
 
-    fun sendMessage(etMessage: String, user: String) {
+    fun sendMessage(etMessage: String, user: String, isOnline: Boolean) {
         executeAsync(Dispatchers.IO) {
             if (etMessage.isNotBlank()) {
                 val message = MessageModel(
                     etMessage,
                     Calendar.getInstance().timeInMillis,
-                    user
+                    user,
+                    isOnline
                 )
                 chatRepository.saveMessage(message)
                 _messageSentState.emit(true)
