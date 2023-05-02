@@ -9,10 +9,6 @@ abstract class BaseAdapter<T : ModelWithId<T>, VB : ViewBinding, VH : BaseAdapte
     private val listener: AdapterListener,
 ) : ListAdapter<T, VH>(CustomItemCallback<T>()) {
 
-    interface AdapterListener {
-        fun getUserId(): String
-    }
-
     abstract class BaseViewHolder<T : ModelWithId<T>, VB : ViewBinding>(binding: VB) :
         RecyclerView.ViewHolder(binding.root) {
         abstract fun onBind(item: T, listener: AdapterListener)

@@ -3,6 +3,7 @@ package com.space_intl.chatapp.presentation.ui.chat.fragment
 import android.content.IntentFilter
 import com.space_intl.chatapp.common.extensions.collectAsync
 import com.space_intl.chatapp.common.extensions.hideKeyboard
+import com.space_intl.chatapp.common.extensions.scrollToBottom
 import com.space_intl.chatapp.databinding.FragmentChatBinding
 import com.space_intl.chatapp.presentation.base.fragment.BaseFragment
 import com.space_intl.chatapp.presentation.base.fragment.Inflater
@@ -20,7 +21,6 @@ class ChatFragment : BaseFragment<FragmentChatBinding, ChatViewModel>() {
     override val filter by lazy { IntentFilter(receiver?.actionName) }
     override fun setReceiver(): Receiver = lazy { MessageReceiver(requireActivity()) }.value
     override fun inflate(): Inflater<FragmentChatBinding> = FragmentChatBinding::inflate
-    override fun userId(): String = tag.toString()
     override val viewModelClass: KClass<ChatViewModel> get() = ChatViewModel::class
 
     override fun onBindViewModel(vm: ChatViewModel) {
@@ -41,7 +41,7 @@ class ChatFragment : BaseFragment<FragmentChatBinding, ChatViewModel>() {
         collectAsync(vm.messagesHistoryState) { messages ->
             userMessagesAdapter.submitList(messages.toList())
             delay(DELAY)
-            binding.chatRecyclerView.scrollToPosition(messages.size - 1)
+            binding.chatRecyclerView.scrollToBottom()
         }
         receiver?.callback = {
             vm.retrieveMessages()
@@ -52,7 +52,7 @@ class ChatFragment : BaseFragment<FragmentChatBinding, ChatViewModel>() {
         with(binding) {
             messageEditText.text?.let {
                 vm.sendMessage(
-                    it,
+                    it.toString(),
                     userId
                 )
             }

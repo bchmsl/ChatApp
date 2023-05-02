@@ -1,6 +1,5 @@
 package com.space_intl.chatapp.presentation.ui.chat.vm
 
-import android.text.Editable
 import androidx.lifecycle.ViewModel
 import com.space_intl.chatapp.common.extensions.executeAsync
 import com.space_intl.chatapp.domain.model.MessageModel
@@ -28,11 +27,11 @@ class ChatViewModel(
         }
     }
 
-    fun sendMessage(etMessage: Editable, user: String) {
+    fun sendMessage(etMessage: String, user: String) {
         executeAsync(Dispatchers.IO) {
-            if (etMessage.toString().isNotBlank()) {
+            if (etMessage.isNotBlank()) {
                 val message = MessageModel(
-                    etMessage.toString(),
+                    etMessage,
                     Calendar.getInstance().timeInMillis,
                     user
                 )
