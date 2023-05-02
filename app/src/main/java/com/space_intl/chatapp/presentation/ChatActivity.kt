@@ -5,8 +5,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate.*
 import androidx.appcompat.widget.AppCompatToggleButton
 import com.space_intl.chatapp.databinding.ActivityChatBinding
-import com.space_intl.chatapp.presentation.model.UserTags
-import com.space_intl.chatapp.presentation.ui.chat.ChatFragment
+import com.space_intl.chatapp.presentation.constants.UserConstants
+import com.space_intl.chatapp.presentation.ui.chat.fragment.ChatFragment
 
 class ChatActivity : AppCompatActivity() {
 
@@ -47,11 +47,11 @@ class ChatActivity : AppCompatActivity() {
     private fun setupFragments(savedInstanceState: Bundle?) {
         supportFragmentManager.beginTransaction().apply {
             if (savedInstanceState == null) {
-                add(binding.firstFragmentContainer.id, ChatFragment(), UserTags.FirstUser.name)
-                add(binding.secondFragmentContainer.id, ChatFragment(), UserTags.SecondUser.name)
+                add(binding.firstFragmentContainer.id, ChatFragment(), UserConstants.firstUserId)
+                add(binding.secondFragmentContainer.id, ChatFragment(), UserConstants.secondUserId)
             } else {
-                replace(binding.firstFragmentContainer.id, ChatFragment(), UserTags.FirstUser.name)
-                replace(binding.secondFragmentContainer.id, ChatFragment(), UserTags.SecondUser.name)
+                replace(binding.firstFragmentContainer.id, ChatFragment(), UserConstants.firstUserId)
+                replace(binding.secondFragmentContainer.id, ChatFragment(), UserConstants.secondUserId)
             }
         }.commit()
     }

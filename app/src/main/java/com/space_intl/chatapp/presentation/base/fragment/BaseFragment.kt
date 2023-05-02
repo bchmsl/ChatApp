@@ -1,4 +1,4 @@
-package com.space_intl.chatapp.presentation.base
+package com.space_intl.chatapp.presentation.base.fragment
 
 import android.content.IntentFilter
 import android.os.Bundle
@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModel
 import androidx.viewbinding.ViewBinding
+import com.space_intl.chatapp.presentation.base.adapter.BaseAdapter
 import com.space_intl.chatapp.service.Receiver
 import org.koin.androidx.viewmodel.ext.android.viewModelForClass
 import kotlin.reflect.KClass
@@ -15,6 +16,12 @@ import kotlin.reflect.KClass
 typealias Inflater<VB> = (inflater: LayoutInflater, container: ViewGroup, attachToRoot: Boolean) -> VB
 
 abstract class BaseFragment<VB : ViewBinding, VM : ViewModel> : Fragment() {
+
+    protected val listener = object: BaseAdapter.AdapterListener{
+        override fun getUserId(): String = userId
+    }
+
+    protected val userId get() = userId()
 
     private var _binding: VB? = null
     protected val binding get() = _binding!!
@@ -27,6 +34,7 @@ abstract class BaseFragment<VB : ViewBinding, VM : ViewModel> : Fragment() {
 
     abstract fun inflate(): Inflater<VB>
     abstract fun setReceiver(): Receiver
+    abstract fun userId(): String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
