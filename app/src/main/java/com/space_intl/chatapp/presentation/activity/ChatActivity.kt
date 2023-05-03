@@ -22,11 +22,11 @@ class ChatActivity : AppCompatActivity() {
             setDefaultNightMode(MODE_NIGHT_YES)
         }
         setupFragments()
-        switchListener()
+        setSwitchListener()
     }
 
 
-    private fun switchListener() {
+    private fun setSwitchListener() {
         with(binding) {
             switchToggleButton.setOnClickListener {
                 checkSwitchState(switchToggleButton)
@@ -41,8 +41,8 @@ class ChatActivity : AppCompatActivity() {
 
     private fun setupFragments() {
         with(binding) {
-            setFragmentToContainer(firstFragmentContainer, ChatFragment())
-            setFragmentToContainer(secondFragmentContainer, ChatFragment())
+            setFragmentToContainer(firstFragmentContainer, ChatFragment(), "firstFragment")
+            setFragmentToContainer(secondFragmentContainer, ChatFragment(), "secondFragment")
         }
     }
 }
