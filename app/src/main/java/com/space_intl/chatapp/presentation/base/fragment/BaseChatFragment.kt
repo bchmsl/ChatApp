@@ -9,7 +9,6 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModel
 import androidx.viewbinding.ViewBinding
-import com.space_intl.chatapp.presentation.base.adapter.AdapterListener
 import com.space_intl.chatapp.service.Receiver
 import org.koin.androidx.viewmodel.ext.android.viewModelForClass
 import kotlin.reflect.KClass
@@ -19,8 +18,8 @@ typealias Inflater<VB> = (inflater: LayoutInflater, container: ViewGroup, attach
 abstract class BaseChatFragment<VB : ViewBinding, VM : ViewModel> : Fragment() {
 
     protected val userId get() = tag.toString()
-    protected val listener = object: AdapterListener {
-        override fun getUserId(): String = userId
+    protected val listener = {
+        userId
     }
 
     private var _binding: VB? = null

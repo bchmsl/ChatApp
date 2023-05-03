@@ -6,7 +6,7 @@ import androidx.viewbinding.ViewBinding
 import com.space_intl.chatapp.presentation.model.ModelWithId
 
 abstract class BaseAdapter<T : ModelWithId<T>, VB : ViewBinding, VH : BaseAdapter.BaseViewHolder<T, VB>>(
-    private val listener: AdapterListener,
+    private val listener: () -> String,
 ) : ListAdapter<T, VH>(CustomItemCallback<T>()) {
 
     override fun onBindViewHolder(holder: VH, position: Int) {
@@ -15,6 +15,6 @@ abstract class BaseAdapter<T : ModelWithId<T>, VB : ViewBinding, VH : BaseAdapte
 
     abstract class BaseViewHolder<T : ModelWithId<T>, VB : ViewBinding>(binding: VB) :
         RecyclerView.ViewHolder(binding.root) {
-        abstract fun onBind(item: T, listener: AdapterListener)
+        abstract fun onBind(item: T, listener: () -> String)
     }
 }
