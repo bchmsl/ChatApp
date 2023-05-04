@@ -6,10 +6,10 @@ import com.space_intl.chatapp.common.extensions.hideKeyboard
 import com.space_intl.chatapp.common.extensions.isOnline
 import com.space_intl.chatapp.common.extensions.scrollToBottom
 import com.space_intl.chatapp.databinding.FragmentChatBinding
-import com.space_intl.chatapp.domain.model.MessageModel
 import com.space_intl.chatapp.presentation.base.fragment.BaseChatFragment
 import com.space_intl.chatapp.presentation.base.fragment.Inflater
 import com.space_intl.chatapp.presentation.ui.chat.adapter.ChatAdapter
+import com.space_intl.chatapp.presentation.ui.chat.model.MessageUiModel
 import com.space_intl.chatapp.presentation.ui.chat.viewmodel.ChatViewModel
 import com.space_intl.chatapp.service.MessageReceiver
 import com.space_intl.chatapp.service.Receiver
@@ -53,7 +53,7 @@ class ChatFragment : BaseChatFragment<FragmentChatBinding, ChatViewModel>() {
         }
     }
 
-    private fun filterMessages(messages: List<MessageModel>): List<MessageModel> {
+    private fun filterMessages(messages: List<MessageUiModel>): List<MessageUiModel> {
         return messages.filter {
             val isMessageSent = it.userId == userId
             val isMessageShown = (!it.isDelivered && isMessageSent) || it.isDelivered

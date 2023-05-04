@@ -6,20 +6,16 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.annotation.ColorRes
-import com.space_intl.chatapp.R
 import com.space_intl.chatapp.common.extensions.setBackgroundTint
 import com.space_intl.chatapp.common.extensions.setTint
-import com.space_intl.chatapp.common.extensions.toFormattedDate
+import com.space_intl.chatapp.common.util.C
+import com.space_intl.chatapp.common.util.S
 import com.space_intl.chatapp.databinding.LayoutMessageItemBinding
-import com.space_intl.chatapp.domain.model.MessageModel
-import com.space_intl.chatapp.presentation.base.adapter.AdapterListener
 import com.space_intl.chatapp.presentation.base.adapter.BaseAdapter
-
-typealias C = R.color
-typealias S = R.string
+import com.space_intl.chatapp.presentation.ui.chat.model.MessageUiModel
 
 class ChatAdapter(listener: () -> String) :
-    BaseAdapter<MessageModel, LayoutMessageItemBinding, ChatAdapter.ChatViewHolder>(listener) {
+    BaseAdapter<MessageUiModel, LayoutMessageItemBinding, ChatAdapter.ChatViewHolder>(listener) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ChatViewHolder =
         ChatViewHolder(
@@ -31,17 +27,16 @@ class ChatAdapter(listener: () -> String) :
         )
 
     class ChatViewHolder(private val binding: LayoutMessageItemBinding) :
-        BaseViewHolder<MessageModel, LayoutMessageItemBinding>(binding) {
+        BaseViewHolder<MessageUiModel, LayoutMessageItemBinding>(binding) {
 
-        override fun onBind(item: MessageModel, listener: () -> String) {
+        override fun onBind(item: MessageUiModel, listener: () -> String) {
             with(binding) {
                 messageTextView.text = item.message
-                dateTextView.text = item.dateSent.toFormattedDate()
                 val isSentMessage = (listener.invoke() == item.userId)
 
                 messageTextView.text = item.message
                 dateTextView.text =
-                    if (item.isDelivered) item.dateSent.toFormattedDate() else dateTextView.context.getString(
+                    if (item.isDelivered) item.dateSentStr else dateTextView.context.getString(
                         S.not_delivered
                     )
 
@@ -51,12 +46,12 @@ class ChatAdapter(listener: () -> String) :
                 )
 
                 setColor(
-                    if (isSentMessage) COLOR_SENT else COLOR_RECEIVED,
+                    if (isSentMessage) C.purple_light else C.neutral_02,
                     smallCircleImageView, bigCircleImageView, messageTextView
                 )
 
                 setTextColor(
-                    if (item.isDelivered) COLOR_DATE else COLOR_ERROR,
+                    if (item.isDelivered) C.neutral_02 else C.red,
                     dateTextView
                 )
 
@@ -100,11 +95,6 @@ class ChatAdapter(listener: () -> String) :
             private const val DIRECTION_RTL = -1f
             private const val OPACITY_FULL = 1f
             private const val OPACITY_HALF = 0.5f
-            private const val COLOR_SENT = C.purple_light
-            private const val COLOR_RECEIVED = C.neutral_02
-            private const val COLOR_DATE = C.neutral_02
-            private const val COLOR_ERROR = C.red
-
         }
     }
 }

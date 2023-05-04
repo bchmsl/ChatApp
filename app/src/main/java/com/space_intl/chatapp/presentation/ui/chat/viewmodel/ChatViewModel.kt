@@ -2,8 +2,10 @@ package com.space_intl.chatapp.presentation.ui.chat.viewmodel
 
 import androidx.lifecycle.ViewModel
 import com.space_intl.chatapp.common.extensions.executeAsync
-import com.space_intl.chatapp.domain.model.MessageModel
 import com.space_intl.chatapp.domain.repository.ChatRepository
+import com.space_intl.chatapp.presentation.ui.chat.model.MessageUiModel
+import com.space_intl.chatapp.presentation.ui.chat.model.mapper.toDomain
+import com.space_intl.chatapp.presentation.ui.chat.model.mapper.toUi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -13,7 +15,7 @@ class ChatViewModel(
     private val chatRepository: ChatRepository
 ) : ViewModel() {
 
-    private val _messagesHistoryState = MutableStateFlow<List<MessageModel>>(emptyList())
+    private val _messagesHistoryState = MutableStateFlow<List<MessageUiModel>>(emptyList())
     val messagesHistoryState get() = _messagesHistoryState.asStateFlow()
 
     private val _messageSentState = MutableStateFlow(false)
@@ -22,7 +24,7 @@ class ChatViewModel(
     fun retrieveMessages() {
         executeAsync(Dispatchers.IO) {
             chatRepository.retrieveMessages().collect {messages ->
-                _messagesHistoryState.emit(messages)
+                _messagesHistoryState.emit(messages.map { it.toUi() })
             }
         }
     }
@@ -30,13 +32,13 @@ class ChatViewModel(
     fun sendMessage(etMessage: String, user: String, isOnline: Boolean) {
         executeAsync(Dispatchers.IO) {
             if (etMessage.isNotBlank()) {
-                val message = MessageModel(
+                val message = MessageUiModel(
                     etMessage,
                     Calendar.getInstance().timeInMillis,
                     user,
-                    isOnline
+                    isDelivered = isOnline
                 )
-                chatRepository.saveMessage(message)
+                chatRepository.saveMessage(message.toDomain())
                 _messageSentState.emit(true)
             }
         }
