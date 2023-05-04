@@ -19,11 +19,14 @@ class ChatViewModel(
     val messagesHistoryState get() = _messagesHistoryState.asStateFlow()
 
     private val _messageSentState = MutableStateFlow(false)
-    val messageSentState get() = _messageSentState
+    val messageSentState get() = _messageSentState.asStateFlow()
+
+    private val _messageState = MutableStateFlow("")
+    val messageState get() = _messageState.asStateFlow()
 
     fun retrieveMessages() {
         executeAsync(Dispatchers.IO) {
-            chatRepository.retrieveMessages().collect {messages ->
+            chatRepository.retrieveMessages().collect { messages ->
                 _messagesHistoryState.emit(messages.map { it.toUi() })
             }
         }
@@ -42,5 +45,9 @@ class ChatViewModel(
                 _messageSentState.emit(true)
             }
         }
+    }
+
+    fun saveMessageState(message: String) {
+        _messageState.tryEmit(message)
     }
 }

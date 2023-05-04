@@ -4,7 +4,6 @@ import android.content.IntentFilter
 import com.space_intl.chatapp.common.extensions.collectAsync
 import com.space_intl.chatapp.common.extensions.hideKeyboard
 import com.space_intl.chatapp.common.extensions.isOnline
-import com.space_intl.chatapp.common.extensions.scrollToBottom
 import com.space_intl.chatapp.databinding.FragmentChatBinding
 import com.space_intl.chatapp.presentation.base.fragment.BaseChatFragment
 import com.space_intl.chatapp.presentation.base.fragment.Inflater
@@ -13,8 +12,8 @@ import com.space_intl.chatapp.presentation.ui.chat.model.MessageUiModel
 import com.space_intl.chatapp.presentation.ui.chat.viewmodel.ChatViewModel
 import com.space_intl.chatapp.service.MessageReceiver
 import com.space_intl.chatapp.service.Receiver
-import kotlinx.coroutines.delay
 import kotlin.reflect.KClass
+
 
 class ChatFragment : BaseChatFragment<FragmentChatBinding, ChatViewModel>() {
 
@@ -41,13 +40,14 @@ class ChatFragment : BaseChatFragment<FragmentChatBinding, ChatViewModel>() {
     private fun loadContent(vm: ChatViewModel) {
         binding.chatRecyclerView.apply {
             adapter = userMessagesAdapter
-            itemAnimator = null
         }
         collectAsync(vm.messagesHistoryState) { messages ->
             userMessagesAdapter.submitList(filterMessages(messages).toList())
-            delay(DELAY)
-            binding.chatRecyclerView.scrollToBottom()
         }
+        collectAsync(vm.messageState) {
+            binding.messageEditText.setText(it)
+        }
+
         receiver.callback = {
             vm.retrieveMessages()
         }
@@ -79,7 +79,11 @@ class ChatFragment : BaseChatFragment<FragmentChatBinding, ChatViewModel>() {
         }
     }
 
+    override fun onPause() {
+        super.onPause()
+        vm.saveMessageState(binding.messageEditText.text.toString())
+    }
     companion object {
-        private const val DELAY = 100L
+        private const val DELAY = 1000L
     }
 }
