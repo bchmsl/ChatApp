@@ -1,5 +1,6 @@
-package com.space_intl.chatapp.presentation.base
+package com.space_intl.chatapp.presentation.base.fragment
 
+import android.content.Context
 import android.content.IntentFilter
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -14,7 +15,12 @@ import kotlin.reflect.KClass
 
 typealias Inflater<VB> = (inflater: LayoutInflater, container: ViewGroup, attachToRoot: Boolean) -> VB
 
-abstract class BaseFragment<VB : ViewBinding, VM : ViewModel> : Fragment() {
+abstract class BaseChatFragment<VB : ViewBinding, VM : ViewModel> : Fragment() {
+
+    protected val userId get() = tag.toString()
+    protected val listener = {
+        userId
+    }
 
     private var _binding: VB? = null
     protected val binding get() = _binding!!
@@ -23,15 +29,17 @@ abstract class BaseFragment<VB : ViewBinding, VM : ViewModel> : Fragment() {
     private val vm: VM by viewModelForClass(clazz = viewModelClass)
 
     protected abstract val filter: IntentFilter
-    protected var receiver: Receiver? = null
+    protected lateinit var receiver: Receiver
 
     abstract fun inflate(): Inflater<VB>
     abstract fun setReceiver(): Receiver
+    abstract fun onBindViewModel(vm: VM)
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
         receiver = setReceiver()
         requireActivity().registerReceiver(receiver, filter)
+
     }
 
     override fun onCreateView(
@@ -48,15 +56,17 @@ abstract class BaseFragment<VB : ViewBinding, VM : ViewModel> : Fragment() {
         onBindViewModel(vm)
     }
 
-    abstract fun onBindViewModel(vm: VM)
-
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    override fun onDetach() {
+        super.onDetach()
         requireActivity().unregisterReceiver(receiver)
     }
 
     protected fun sendBroadcast(action: String) {
-        receiver?.sendBroadcast(action)
+        receiver.sendBroadcast(action)
     }
 }

@@ -1,6 +1,6 @@
 package com.space_intl.chatapp.di.module
 
-import com.space_intl.chatapp.presentation.ui.chat.ChatViewModel
+import com.space_intl.chatapp.presentation.ui.chat.viewmodel.ChatViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 

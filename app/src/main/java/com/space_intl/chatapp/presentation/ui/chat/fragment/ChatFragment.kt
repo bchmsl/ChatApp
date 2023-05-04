@@ -1,24 +1,26 @@
-package com.space_intl.chatapp.presentation.ui.chat
+package com.space_intl.chatapp.presentation.ui.chat.fragment
 
 import android.content.IntentFilter
 import com.space_intl.chatapp.common.extensions.collectAsync
 import com.space_intl.chatapp.common.extensions.hideKeyboard
+import com.space_intl.chatapp.common.extensions.scrollToBottom
 import com.space_intl.chatapp.databinding.FragmentChatBinding
-import com.space_intl.chatapp.presentation.adapter.ChatAdapter
-import com.space_intl.chatapp.presentation.base.BaseFragment
-import com.space_intl.chatapp.presentation.base.Inflater
-import com.space_intl.chatapp.presentation.model.UserTags
+import com.space_intl.chatapp.presentation.base.fragment.BaseChatFragment
+import com.space_intl.chatapp.presentation.base.fragment.Inflater
+import com.space_intl.chatapp.presentation.ui.chat.viewmodel.ChatViewModel
+import com.space_intl.chatapp.presentation.ui.chat.adapter.ChatAdapter
 import com.space_intl.chatapp.service.MessageReceiver
 import com.space_intl.chatapp.service.Receiver
 import kotlinx.coroutines.delay
 import kotlin.reflect.KClass
 
-class ChatFragment : BaseFragment<FragmentChatBinding, ChatViewModel>() {
-    private val userMessagesAdapter by lazy { ChatAdapter(tag?.let { UserTags.valueOf(it) }) }
-    override val filter by lazy { IntentFilter(receiver?.actionName) }
+class ChatFragment : BaseChatFragment<FragmentChatBinding, ChatViewModel>() {
+
+    private val userMessagesAdapter by lazy { ChatAdapter(listener) }
+
+    override val filter by lazy { IntentFilter(receiver.actionName) }
     override fun setReceiver(): Receiver = lazy { MessageReceiver(requireActivity()) }.value
     override fun inflate(): Inflater<FragmentChatBinding> = FragmentChatBinding::inflate
-
     override val viewModelClass: KClass<ChatViewModel> get() = ChatViewModel::class
 
     override fun onBindViewModel(vm: ChatViewModel) {
@@ -36,12 +38,12 @@ class ChatFragment : BaseFragment<FragmentChatBinding, ChatViewModel>() {
 
     private fun loadContent(vm: ChatViewModel) {
         binding.chatRecyclerView.adapter = userMessagesAdapter
-        collectAsync(vm.messagesHistoryState) {messages ->
+        collectAsync(vm.messagesHistoryState) { messages ->
             userMessagesAdapter.submitList(messages.toList())
             delay(DELAY)
-            binding.chatRecyclerView.scrollToPosition(messages.size-1)
+            binding.chatRecyclerView.scrollToBottom()
         }
-        receiver?.callback = {
+        receiver.callback = {
             vm.retrieveMessages()
         }
     }
@@ -50,14 +52,14 @@ class ChatFragment : BaseFragment<FragmentChatBinding, ChatViewModel>() {
         with(binding) {
             messageEditText.text?.let {
                 vm.sendMessage(
-                    it,
-                    UserTags.valueOf(tag ?: "")
+                    it.toString(),
+                    userId
                 )
             }
             messageEditText.setText("")
             collectAsync(vm.messageSentState) { messageSent ->
                 if (messageSent) {
-                    receiver?.let { sendBroadcast(it.actionName) }
+                    sendBroadcast(receiver.actionName)
                 }
             }
         }

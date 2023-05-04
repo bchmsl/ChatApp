@@ -1,4 +1,4 @@
-package com.space_intl.chatapp.presentation.adapter
+package com.space_intl.chatapp.presentation.base.adapter
 
 import androidx.recyclerview.widget.DiffUtil
 import com.space_intl.chatapp.presentation.model.ModelWithId

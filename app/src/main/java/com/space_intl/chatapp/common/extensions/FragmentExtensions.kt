@@ -9,7 +9,6 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 import kotlin.coroutines.CoroutineContext
 
-
 fun Fragment.executeAsync(
     coroutineContext: CoroutineContext = Dispatchers.Main,
     lifecycleState: Lifecycle.State = Lifecycle.State.RESUMED,

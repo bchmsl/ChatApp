@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:background="?attr/background"
     android:orientation="horizontal"
-    tools:context=".presentation.ChatActivity">
+    tools:context=".presentation.activity.ChatActivity">
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/firstFragmentContainer"

@@ -1,11 +1,9 @@
-package com.space_intl.chatapp.presentation.ui.chat
+package com.space_intl.chatapp.presentation.ui.chat.viewmodel
 
-import android.text.Editable
 import androidx.lifecycle.ViewModel
 import com.space_intl.chatapp.common.extensions.executeAsync
 import com.space_intl.chatapp.domain.model.MessageModel
 import com.space_intl.chatapp.domain.repository.ChatRepository
-import com.space_intl.chatapp.presentation.model.UserTags
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -29,11 +27,11 @@ class ChatViewModel(
         }
     }
 
-    fun sendMessage(etMessage: Editable, user: UserTags) {
+    fun sendMessage(etMessage: String, user: String) {
         executeAsync(Dispatchers.IO) {
-            if (etMessage.toString().isNotBlank()) {
+            if (etMessage.isNotBlank()) {
                 val message = MessageModel(
-                    etMessage.toString(),
+                    etMessage,
                     Calendar.getInstance().timeInMillis,
                     user
                 )
