@@ -12,6 +12,7 @@ import com.space_intl.chatapp.common.extensions.setTint
 import com.space_intl.chatapp.common.extensions.toFormattedDate
 import com.space_intl.chatapp.databinding.LayoutMessageItemBinding
 import com.space_intl.chatapp.domain.model.MessageModel
+import com.space_intl.chatapp.presentation.base.adapter.AdapterListener
 import com.space_intl.chatapp.presentation.base.adapter.BaseAdapter
 
 typealias C = R.color
