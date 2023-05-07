@@ -26,7 +26,7 @@ abstract class BaseChatFragment<VB : ViewBinding, VM : ViewModel> : Fragment() {
     protected val binding get() = _binding!!
 
     abstract val viewModelClass: KClass<VM>
-    val vm: VM by viewModelForClass(clazz = viewModelClass)
+    private val vm: VM by viewModelForClass(clazz = viewModelClass)
 
     protected abstract val filter: IntentFilter
     protected lateinit var receiver: Receiver

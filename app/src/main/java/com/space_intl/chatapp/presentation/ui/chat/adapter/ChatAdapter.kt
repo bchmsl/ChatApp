@@ -12,10 +12,10 @@ import com.space_intl.chatapp.common.util.C
 import com.space_intl.chatapp.common.util.S
 import com.space_intl.chatapp.databinding.LayoutMessageItemBinding
 import com.space_intl.chatapp.presentation.base.adapter.BaseAdapter
-import com.space_intl.chatapp.presentation.ui.chat.model.MessageUiModel
+import com.space_intl.chatapp.presentation.ui.chat.model.MessageUIModel
 
 class ChatAdapter(listener: () -> String) :
-    BaseAdapter<MessageUiModel, LayoutMessageItemBinding, ChatAdapter.ChatViewHolder>(listener) {
+    BaseAdapter<MessageUIModel, LayoutMessageItemBinding, ChatAdapter.ChatViewHolder>(listener) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ChatViewHolder =
         ChatViewHolder(
@@ -27,9 +27,9 @@ class ChatAdapter(listener: () -> String) :
         )
 
     class ChatViewHolder(private val binding: LayoutMessageItemBinding) :
-        BaseViewHolder<MessageUiModel, LayoutMessageItemBinding>(binding) {
+        BaseViewHolder<MessageUIModel, LayoutMessageItemBinding>(binding) {
 
-        override fun onBind(item: MessageUiModel, listener: () -> String) {
+        override fun onBind(item: MessageUIModel, listener: () -> String) {
             with(binding) {
                 messageTextView.text = item.message
                 val isSentMessage = (listener.invoke() == item.userId)

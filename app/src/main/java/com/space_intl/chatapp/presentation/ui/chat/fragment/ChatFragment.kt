@@ -8,7 +8,6 @@ import com.space_intl.chatapp.databinding.FragmentChatBinding
 import com.space_intl.chatapp.presentation.base.fragment.BaseChatFragment
 import com.space_intl.chatapp.presentation.base.fragment.Inflater
 import com.space_intl.chatapp.presentation.ui.chat.adapter.ChatAdapter
-import com.space_intl.chatapp.presentation.ui.chat.model.MessageUiModel
 import com.space_intl.chatapp.presentation.ui.chat.viewmodel.ChatViewModel
 import com.space_intl.chatapp.service.MessageReceiver
 import com.space_intl.chatapp.service.Receiver
@@ -25,7 +24,7 @@ class ChatFragment : BaseChatFragment<FragmentChatBinding, ChatViewModel>() {
     override val viewModelClass: KClass<ChatViewModel> get() = ChatViewModel::class
 
     override fun onBindViewModel(vm: ChatViewModel) {
-        vm.retrieveMessages()
+        vm.retrieveMessages(userId)
         listeners(vm)
         loadContent(vm)
     }
@@ -42,22 +41,11 @@ class ChatFragment : BaseChatFragment<FragmentChatBinding, ChatViewModel>() {
             adapter = userMessagesAdapter
         }
         collectAsync(vm.messagesHistoryState) { messages ->
-            userMessagesAdapter.submitList(filterMessages(messages).toList())
-        }
-        collectAsync(vm.messageState) {
-            binding.messageEditText.setText(it)
+            userMessagesAdapter.submitList(messages.toList())
         }
 
         receiver.callback = {
-            vm.retrieveMessages()
-        }
-    }
-
-    private fun filterMessages(messages: List<MessageUiModel>): List<MessageUiModel> {
-        return messages.filter {
-            val isMessageSent = it.userId == userId
-            val isMessageShown = (!it.isDelivered && isMessageSent) || it.isDelivered
-            isMessageShown
+            vm.retrieveMessages(userId)
         }
     }
 
@@ -79,10 +67,6 @@ class ChatFragment : BaseChatFragment<FragmentChatBinding, ChatViewModel>() {
         }
     }
 
-    override fun onPause() {
-        super.onPause()
-        vm.saveMessageState(binding.messageEditText.text.toString())
-    }
     companion object {
         private const val DELAY = 1000L
     }

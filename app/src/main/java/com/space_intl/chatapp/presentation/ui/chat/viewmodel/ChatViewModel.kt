@@ -3,9 +3,9 @@ package com.space_intl.chatapp.presentation.ui.chat.viewmodel
 import androidx.lifecycle.ViewModel
 import com.space_intl.chatapp.common.extensions.executeAsync
 import com.space_intl.chatapp.domain.repository.ChatRepository
-import com.space_intl.chatapp.presentation.ui.chat.model.MessageUiModel
-import com.space_intl.chatapp.presentation.ui.chat.model.mapper.MessageDomainUiMapper
-import com.space_intl.chatapp.presentation.ui.chat.model.mapper.MessageUiDomainMapper
+import com.space_intl.chatapp.presentation.ui.chat.model.MessageUIModel
+import com.space_intl.chatapp.presentation.ui.chat.model.mapper.MessageDomainUIMapper
+import com.space_intl.chatapp.presentation.ui.chat.model.mapper.MessageUIDomainMapper
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -13,23 +13,25 @@ import java.util.*
 
 class ChatViewModel(
     private val chatRepository: ChatRepository,
-    private val uiDomainMapper: MessageUiDomainMapper,
-    private val domainUiMapper: MessageDomainUiMapper
+    private val uiDomainMapper: MessageUIDomainMapper,
+    private val domainUiMapper: MessageDomainUIMapper
 ) : ViewModel() {
 
-    private val _messagesHistoryState = MutableStateFlow<List<MessageUiModel>>(emptyList())
+    private val _messagesHistoryState = MutableStateFlow<List<MessageUIModel>>(emptyList())
     val messagesHistoryState get() = _messagesHistoryState.asStateFlow()
 
     private val _messageSentState = MutableStateFlow(false)
     val messageSentState get() = _messageSentState.asStateFlow()
 
-    private val _messageState = MutableStateFlow("")
-    val messageState get() = _messageState.asStateFlow()
-
-    fun retrieveMessages() {
+    fun retrieveMessages(userId: String) {
         executeAsync(Dispatchers.IO) {
             chatRepository.retrieveMessages().collect { messages ->
-                _messagesHistoryState.emit(messages.map { model -> domainUiMapper.mapModel(model) })
+                _messagesHistoryState.emit(
+                    filterMessages(
+                        messages.map { model -> domainUiMapper(model) },
+                        userId
+                    )
+                )
             }
         }
     }
@@ -37,19 +39,27 @@ class ChatViewModel(
     fun sendMessage(etMessage: String, user: String, isOnline: Boolean) {
         executeAsync(Dispatchers.IO) {
             if (etMessage.isNotBlank()) {
-                val message = MessageUiModel(
+                val message = MessageUIModel(
                     etMessage,
                     Calendar.getInstance().timeInMillis,
                     user,
                     isDelivered = isOnline
                 )
-                chatRepository.saveMessage(uiDomainMapper.mapModel(message))
+                chatRepository.saveMessage(uiDomainMapper(message))
                 _messageSentState.emit(true)
             }
         }
     }
 
-    fun saveMessageState(message: String) {
-        _messageState.tryEmit(message)
+    private fun filterMessages(
+        messages: List<MessageUIModel>,
+        userId: String
+    ): List<MessageUIModel> {
+        return messages.filter {
+            val isMessageSent = it.userId == userId
+            val isMessageShown = (!it.isDelivered && isMessageSent) || it.isDelivered
+            isMessageShown
+        }
     }
+
 }

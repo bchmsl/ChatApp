@@ -16,11 +16,11 @@ class ChatRepositoryImpl(
     override fun retrieveMessages(): Flow<List<MessageDomainModel>> =
         dao.retrieveAll().map { entities ->
             entities.map { entity ->
-                entityDomainMapper.mapModel(entity)
+                entityDomainMapper(entity)
             }
         }
 
     override suspend fun saveMessage(messageModel: MessageDomainModel) {
-        dao.insertMessage(domainEntityMapper.mapModel(messageModel))
+        dao.insertMessage(domainEntityMapper(messageModel))
     }
 }

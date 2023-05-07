@@ -2,12 +2,11 @@ package com.space_intl.chatapp.presentation.ui.chat.model.mapper
 
 import com.space_intl.chatapp.common.mapper.ModelMapper
 import com.space_intl.chatapp.domain.model.MessageDomainModel
-import com.space_intl.chatapp.presentation.ui.chat.model.MessageUiModel
+import com.space_intl.chatapp.presentation.ui.chat.model.MessageUIModel
 
-class MessageDomainUiMapper: ModelMapper<MessageDomainModel, MessageUiModel>{
-    override fun mapModel(model: MessageDomainModel): MessageUiModel =
-        MessageUiModel(
-            id = model.id,
+class MessageUIDomainMapper: ModelMapper<MessageUIModel, MessageDomainModel> {
+    override operator fun invoke(model: MessageUIModel): MessageDomainModel =
+        MessageDomainModel(
             message = model.message,
             dateSent = model.dateSent,
             dateSentStr = model.dateSentStr,

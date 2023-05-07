@@ -5,7 +5,7 @@ import com.space_intl.chatapp.data.local.model.MessageEntity
 import com.space_intl.chatapp.domain.model.MessageDomainModel
 
 class MessageDomainEntityMapper: ModelMapper<MessageDomainModel, MessageEntity> {
-    override fun mapModel(model: MessageDomainModel): MessageEntity =
+    override operator fun invoke(model: MessageDomainModel): MessageEntity =
         MessageEntity(
             message = model.message,
             dateSent = model.dateSent,
