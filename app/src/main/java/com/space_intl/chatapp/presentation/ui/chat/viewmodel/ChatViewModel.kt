@@ -4,15 +4,17 @@ import androidx.lifecycle.ViewModel
 import com.space_intl.chatapp.common.extensions.executeAsync
 import com.space_intl.chatapp.domain.repository.ChatRepository
 import com.space_intl.chatapp.presentation.ui.chat.model.MessageUiModel
-import com.space_intl.chatapp.presentation.ui.chat.model.mapper.toDomain
-import com.space_intl.chatapp.presentation.ui.chat.model.mapper.toUi
+import com.space_intl.chatapp.presentation.ui.chat.model.mapper.MessageDomainUiMapper
+import com.space_intl.chatapp.presentation.ui.chat.model.mapper.MessageUiDomainMapper
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import java.util.*
 
 class ChatViewModel(
-    private val chatRepository: ChatRepository
+    private val chatRepository: ChatRepository,
+    private val uiDomainMapper: MessageUiDomainMapper,
+    private val domainUiMapper: MessageDomainUiMapper
 ) : ViewModel() {
 
     private val _messagesHistoryState = MutableStateFlow<List<MessageUiModel>>(emptyList())
@@ -27,7 +29,7 @@ class ChatViewModel(
     fun retrieveMessages() {
         executeAsync(Dispatchers.IO) {
             chatRepository.retrieveMessages().collect { messages ->
-                _messagesHistoryState.emit(messages.map { it.toUi() })
+                _messagesHistoryState.emit(messages.map { model -> domainUiMapper.mapModel(model) })
             }
         }
     }
@@ -41,7 +43,7 @@ class ChatViewModel(
                     user,
                     isDelivered = isOnline
                 )
-                chatRepository.saveMessage(message.toDomain())
+                chatRepository.saveMessage(uiDomainMapper.mapModel(message))
                 _messageSentState.emit(true)
             }
         }
