@@ -13,7 +13,6 @@ import com.space_intl.chatapp.service.MessageReceiver
 import com.space_intl.chatapp.service.Receiver
 import kotlin.reflect.KClass
 
-
 class ChatFragment : BaseChatFragment<FragmentChatBinding, ChatViewModel>() {
 
     private val userMessagesAdapter by lazy { ChatAdapter(listener) }
