@@ -16,17 +16,20 @@ fun Context.hideKeyboard(view: View) {
 fun Context.isOnline(): Boolean {
     val connectivityManager = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
     val capabilities = connectivityManager.getNetworkCapabilities(connectivityManager.activeNetwork)
-    capabilities?.let {
+    return capabilities?.let {
         if (capabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR)) {
             Log.i("Internet", "NetworkCapabilities.TRANSPORT_CELLULAR")
-            return true
+            true
         } else if (capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI)) {
             Log.i("Internet", "NetworkCapabilities.TRANSPORT_WIFI")
-            return true
+            true
         } else if (capabilities.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET)) {
             Log.i("Internet", "NetworkCapabilities.TRANSPORT_ETHERNET")
-            return true
+            true
+        } else {
+            false
         }
+    }.run {
+        false
     }
-    return false
 }

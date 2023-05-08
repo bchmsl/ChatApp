@@ -3,14 +3,10 @@ package com.space_intl.chatapp.presentation.ui.chat.adapter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
-import androidx.annotation.ColorRes
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.space_intl.chatapp.common.extensions.setBackgroundTint
-import com.space_intl.chatapp.common.extensions.setTint
 import com.space_intl.chatapp.common.util.C
+import com.space_intl.chatapp.presentation.base.adapter.ViewHolderHelper
 import com.space_intl.chatapp.common.util.S
 import com.space_intl.chatapp.databinding.LayoutMessageItemBinding
 import com.space_intl.chatapp.presentation.base.adapter.CustomItemCallback
@@ -39,8 +35,7 @@ class ChatAdapter(private val listener: () -> String) :
         )
 
     class ChatViewHolder(private val binding: LayoutMessageItemBinding) :
-        RecyclerView.ViewHolder(binding.root) {
-
+        RecyclerView.ViewHolder(binding.root), ViewHolderHelper {
         fun onBind(
             item: MessageUIModel,
             listener: () -> String,
@@ -49,63 +44,56 @@ class ChatAdapter(private val listener: () -> String) :
             with(binding) {
                 messageTextView.text = item.message
                 val isSentMessage = (listener.invoke() == item.userId)
-                root.setOnClickListener {
-                    if (!item.isDelivered){
-                        onItemClick?.invoke(item)
-                    }
+                handleDelivery(item, binding)
+                handleFlip(isSentMessage, binding)
+
+                setListener(root, item) {
+                    onItemClick?.invoke(item)
                 }
-                messageTextView.text = item.message
-                dateTextView.text =
-                    if (item.isDelivered) item.dateSentStr else dateTextView.context.getString(
-                        S.not_delivered
+            }
+        }
+
+        private fun setListener(view: View, item: MessageUIModel, onItemClick: () -> Unit) {
+            view.setOnClickListener {
+                if (!item.isDelivered) {
+                    onItemClick.invoke()
+                }
+            }
+        }
+
+        private fun handleFlip(isSentMessage: Boolean, binding: LayoutMessageItemBinding) {
+            with(binding) {
+                if (isSentMessage) {
+                    setScaleX(DIRECTION_LTR, root, messageTextView, dateTextView)
+                    setColor(
+                        C.purple_light,
+                        smallCircleImageView,
+                        bigCircleImageView,
+                        messageTextView
                     )
-
-                setScaleX(
-                    if (isSentMessage) DIRECTION_LTR else DIRECTION_RTL,
-                    root, messageTextView, dateTextView
-                )
-
-                setColor(
-                    if (isSentMessage) C.purple_light else C.neutral_02_dark_grey,
-                    smallCircleImageView, bigCircleImageView, messageTextView
-                )
-
-                setTextColor(
-                    if (item.isDelivered) C.neutral_02_dark_grey else C.error_label,
-                    dateTextView
-                )
-
-                setAlpha(
-                    if (item.isDelivered) OPACITY_FULL else OPACITY_HALF,
-                    root
-                )
-            }
-        }
-
-        private fun setScaleX(scale: Float, vararg views: View) {
-            views.forEach { v ->
-                v.scaleX = scale
-            }
-        }
-
-        private fun setAlpha(alpha: Float, vararg views: View) {
-            views.forEach { v ->
-                v.alpha = alpha
-            }
-        }
-
-        private fun setColor(@ColorRes color: Int, vararg views: View) {
-            views.forEach { v ->
-                when (v) {
-                    is TextView -> v.setBackgroundTint(color)
-                    is ImageView -> v.setTint(color)
+                } else {
+                    setScaleX(DIRECTION_RTL, root, messageTextView, dateTextView)
+                    setColor(
+                        C.neutral_02_dark_grey,
+                        smallCircleImageView,
+                        bigCircleImageView,
+                        messageTextView
+                    )
                 }
             }
         }
 
-        private fun setTextColor(@ColorRes color: Int, vararg textViews: TextView) {
-            textViews.forEach { t ->
-                t.setTextColor(t.context.getColor(color))
+        private fun handleDelivery(item: MessageUIModel, binding: LayoutMessageItemBinding) {
+            with(binding) {
+                if (item.isDelivered) {
+                    dateTextView.text = item.dateSentStr
+                    setTextColor(C.neutral_02_dark_grey, dateTextView)
+                    setAlpha(OPACITY_FULL, root)
+                } else {
+                    dateTextView.text = dateTextView.context.getString(S.not_delivered)
+                    setTextColor(C.error_label, dateTextView)
+                    setAlpha(OPACITY_HALF, root)
+                }
             }
         }
 

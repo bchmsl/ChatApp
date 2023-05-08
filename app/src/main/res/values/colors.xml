@@ -15,7 +15,7 @@
     <color name="neutral_03_grey">#DADADA</color>
     <color name="neutral_05_lightest_grey">#F1F1F1</color>
     <color name="dark_01_midnight_blue">#160039</color>
-    <color name="dark_02_blue">#2e0072</color>
+    <color name="dark_02_blue">#2E0072</color>
     <color name="yellow">#F7CE7F</color>
     <color name="error_label">#FF0000</color>
 </resources>

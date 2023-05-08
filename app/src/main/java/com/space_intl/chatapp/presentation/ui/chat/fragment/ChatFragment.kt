@@ -1,10 +1,8 @@
 package com.space_intl.chatapp.presentation.ui.chat.fragment
 
 import android.content.IntentFilter
-import com.space_intl.chatapp.common.extensions.collectAsync
-import com.space_intl.chatapp.common.extensions.hideKeyboard
-import com.space_intl.chatapp.common.extensions.isOnline
-import com.space_intl.chatapp.common.extensions.makeSnackbar
+import com.space_intl.chatapp.common.extensions.*
+import com.space_intl.chatapp.common.util.S
 import com.space_intl.chatapp.databinding.FragmentChatBinding
 import com.space_intl.chatapp.presentation.base.fragment.BaseChatFragment
 import com.space_intl.chatapp.presentation.base.fragment.Inflater
@@ -21,7 +19,7 @@ class ChatFragment : BaseChatFragment<FragmentChatBinding, ChatViewModel>() {
     private val userMessagesAdapter by lazy { ChatAdapter(listener) }
 
     override val filter by lazy { IntentFilter(receiver.actionName) }
-    override fun setReceiver(): Receiver = lazy { MessageReceiver(requireActivity()) }.value
+    override fun setReceiver(): Receiver = lazy { MessageReceiver(fragmentActivity) }.value
     override fun inflate(): Inflater<FragmentChatBinding> = FragmentChatBinding::inflate
     override val viewModelClass: KClass<ChatViewModel> get() = ChatViewModel::class
 
@@ -32,23 +30,25 @@ class ChatFragment : BaseChatFragment<FragmentChatBinding, ChatViewModel>() {
     }
 
     private fun listeners(vm: ChatViewModel) {
-        binding.sendButton.setOnClickListener {
-            sendMessage(vm)
-            requireActivity().hideKeyboard(binding.root)
-        }
-        userMessagesAdapter.onItemClick {
-            if (requireContext().isOnline()){
-                resendMessage(vm, it)
-            }else{
-                binding.root.makeSnackbar("Check internet connection", true)
+        with(binding) {
+            sendButton.setOnClickListener {
+                sendMessage(vm)
+                fragmentActivity.hideKeyboard(root)
+            }
+            userMessagesAdapter.onItemClick {
+                if (fragmentContext.isOnline()) {
+                    resendMessage(vm, it)
+                } else {
+                    root.makeSnackbar(getString(S.check_internet_connection), true)
+                }
             }
         }
     }
 
-    private fun resendMessage(vm: ChatViewModel, messageUIModel: MessageUIModel) {
-        val message = messageUIModel.message
-        vm.removeMessage(messageUIModel)
-        vm.sendMessage(message, userId, requireContext().isOnline())
+    private fun resendMessage(vm: ChatViewModel, oldMessage: MessageUIModel) {
+        val messageText = oldMessage.message
+        vm.removeMessage(oldMessage)
+        vm.sendMessage(messageText, userId, fragmentContext.isOnline())
     }
 
     private fun loadContent(vm: ChatViewModel) {
@@ -59,7 +59,6 @@ class ChatFragment : BaseChatFragment<FragmentChatBinding, ChatViewModel>() {
         collectAsync(vm.messagesHistoryState) { messages ->
             userMessagesAdapter.submitList(messages.toList())
         }
-
         receiver.callback = {
             vm.retrieveMessages(userId)
         }
@@ -71,10 +70,10 @@ class ChatFragment : BaseChatFragment<FragmentChatBinding, ChatViewModel>() {
                 vm.sendMessage(
                     it.toString(),
                     userId,
-                    requireContext().isOnline()
+                    fragmentContext.isOnline()
                 )
             }
-            messageEditText.setText("")
+            messageEditText.setEmpty()
             collectAsync(vm.messageSentState) { messageSent ->
                 if (messageSent) {
                     sendBroadcast(receiver.actionName)

@@ -28,3 +28,6 @@ fun <T> Fragment.collectAsync(flow: Flow<T>, block: suspend (T) -> Unit) {
         }
     }
 }
+
+val Fragment.fragmentContext get() = let { context } ?: requireContext()
+val Fragment.fragmentActivity get() = let { activity } ?: requireActivity()
