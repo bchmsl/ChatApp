@@ -1,6 +1,7 @@
 package com.space_intl.chatapp.data.local.dao
 
 import androidx.room.Dao
+import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
 import com.space_intl.chatapp.data.local.model.MessageEntity
@@ -13,4 +14,7 @@ interface MessageDao {
 
     @Insert
     suspend fun insertMessage(messageEntity: MessageEntity)
+
+    @Delete
+    suspend fun deleteMessage(messageEntity: MessageEntity)
 }

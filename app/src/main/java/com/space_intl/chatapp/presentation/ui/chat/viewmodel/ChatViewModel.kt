@@ -6,7 +6,7 @@ import com.space_intl.chatapp.domain.repository.ChatRepository
 import com.space_intl.chatapp.presentation.ui.chat.model.MessageUIModel
 import com.space_intl.chatapp.presentation.ui.chat.model.mapper.MessageDomainUIMapper
 import com.space_intl.chatapp.presentation.ui.chat.model.mapper.MessageUIDomainMapper
-import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import java.util.*
@@ -24,7 +24,7 @@ class ChatViewModel(
     val messageSentState get() = _messageSentState.asStateFlow()
 
     fun retrieveMessages(userId: String) {
-        executeAsync(Dispatchers.IO) {
+        executeAsync(IO) {
             chatRepository.retrieveMessages().collect { messages ->
                 _messagesHistoryState.emit(
                     filterMessages(
@@ -37,7 +37,7 @@ class ChatViewModel(
     }
 
     fun sendMessage(etMessage: String, user: String, isOnline: Boolean) {
-        executeAsync(Dispatchers.IO) {
+        executeAsync(IO) {
             if (etMessage.isNotBlank()) {
                 val message = MessageUIModel(
                     etMessage,
@@ -51,6 +51,12 @@ class ChatViewModel(
         }
     }
 
+    fun removeMessage(messageUIModel: MessageUIModel) {
+        executeAsync(IO) {
+            chatRepository.removeMessage(uiDomainMapper(messageUIModel))
+        }
+    }
+
     private fun filterMessages(
         messages: List<MessageUIModel>,
         userId: String
@@ -61,5 +67,6 @@ class ChatViewModel(
             isMessageShown
         }
     }
+
 
 }

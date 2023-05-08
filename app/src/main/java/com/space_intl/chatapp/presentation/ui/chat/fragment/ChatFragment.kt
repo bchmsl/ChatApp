@@ -4,10 +4,12 @@ import android.content.IntentFilter
 import com.space_intl.chatapp.common.extensions.collectAsync
 import com.space_intl.chatapp.common.extensions.hideKeyboard
 import com.space_intl.chatapp.common.extensions.isOnline
+import com.space_intl.chatapp.common.extensions.makeSnackbar
 import com.space_intl.chatapp.databinding.FragmentChatBinding
 import com.space_intl.chatapp.presentation.base.fragment.BaseChatFragment
 import com.space_intl.chatapp.presentation.base.fragment.Inflater
 import com.space_intl.chatapp.presentation.ui.chat.adapter.ChatAdapter
+import com.space_intl.chatapp.presentation.ui.chat.model.MessageUIModel
 import com.space_intl.chatapp.presentation.ui.chat.viewmodel.ChatViewModel
 import com.space_intl.chatapp.service.MessageReceiver
 import com.space_intl.chatapp.service.Receiver
@@ -34,11 +36,25 @@ class ChatFragment : BaseChatFragment<FragmentChatBinding, ChatViewModel>() {
             sendMessage(vm)
             requireActivity().hideKeyboard(binding.root)
         }
+        userMessagesAdapter.onItemClick {
+            if (requireContext().isOnline()){
+                resendMessage(vm, it)
+            }else{
+                binding.root.makeSnackbar("Check internet connection", true)
+            }
+        }
+    }
+
+    private fun resendMessage(vm: ChatViewModel, messageUIModel: MessageUIModel) {
+        val message = messageUIModel.message
+        vm.removeMessage(messageUIModel)
+        vm.sendMessage(message, userId, requireContext().isOnline())
     }
 
     private fun loadContent(vm: ChatViewModel) {
         binding.chatRecyclerView.apply {
             adapter = userMessagesAdapter
+            itemAnimator = null
         }
         collectAsync(vm.messagesHistoryState) { messages ->
             userMessagesAdapter.submitList(messages.toList())
@@ -65,9 +81,5 @@ class ChatFragment : BaseChatFragment<FragmentChatBinding, ChatViewModel>() {
                 }
             }
         }
-    }
-
-    companion object {
-        private const val DELAY = 1000L
     }
 }

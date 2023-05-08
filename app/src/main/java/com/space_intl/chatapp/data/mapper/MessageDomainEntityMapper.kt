@@ -10,6 +10,7 @@ class MessageDomainEntityMapper: ModelMapper<MessageDomainModel, MessageEntity> 
             message = model.message,
             dateSent = model.dateSent,
             userId = model.userId,
-            isDelivered = model.isDelivered
+            isDelivered = model.isDelivered,
+            id = model.id
         )
 }

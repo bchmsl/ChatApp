@@ -9,8 +9,8 @@ class MessageUIDomainMapper: ModelMapper<MessageUIModel, MessageDomainModel> {
         MessageDomainModel(
             message = model.message,
             dateSent = model.dateSent,
-            dateSentStr = model.dateSentStr,
             userId = model.userId,
-            isDelivered = model.isDelivered
+            isDelivered = model.isDelivered,
+            id = model.id
         )
 }

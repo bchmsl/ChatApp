@@ -23,4 +23,8 @@ class ChatRepositoryImpl(
     override suspend fun saveMessage(messageModel: MessageDomainModel) {
         dao.insertMessage(domainEntityMapper(messageModel))
     }
+
+    override suspend fun removeMessage(messageModel: MessageDomainModel) {
+        dao.deleteMessage(domainEntityMapper(messageModel))
+    }
 }

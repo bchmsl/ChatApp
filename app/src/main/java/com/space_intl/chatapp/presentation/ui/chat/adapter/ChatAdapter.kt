@@ -6,16 +6,28 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.annotation.ColorRes
+import androidx.recyclerview.widget.ListAdapter
+import androidx.recyclerview.widget.RecyclerView
 import com.space_intl.chatapp.common.extensions.setBackgroundTint
 import com.space_intl.chatapp.common.extensions.setTint
 import com.space_intl.chatapp.common.util.C
 import com.space_intl.chatapp.common.util.S
 import com.space_intl.chatapp.databinding.LayoutMessageItemBinding
-import com.space_intl.chatapp.presentation.base.adapter.BaseAdapter
+import com.space_intl.chatapp.presentation.base.adapter.CustomItemCallback
 import com.space_intl.chatapp.presentation.ui.chat.model.MessageUIModel
 
-class ChatAdapter(listener: () -> String) :
-    BaseAdapter<MessageUIModel, LayoutMessageItemBinding, ChatAdapter.ChatViewHolder>(listener) {
+class ChatAdapter(private val listener: () -> String) :
+    ListAdapter<MessageUIModel, ChatAdapter.ChatViewHolder>(CustomItemCallback<MessageUIModel>()) {
+
+    private var click: ((MessageUIModel) -> Unit)? = null
+
+    fun onItemClick(block: (MessageUIModel) -> Unit) {
+        click = block
+    }
+
+    override fun onBindViewHolder(holder: ChatViewHolder, position: Int) {
+        holder.onBind(getItem(position), listener, click)
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ChatViewHolder =
         ChatViewHolder(
@@ -27,13 +39,21 @@ class ChatAdapter(listener: () -> String) :
         )
 
     class ChatViewHolder(private val binding: LayoutMessageItemBinding) :
-        BaseViewHolder<MessageUIModel, LayoutMessageItemBinding>(binding) {
+        RecyclerView.ViewHolder(binding.root) {
 
-        override fun onBind(item: MessageUIModel, listener: () -> String) {
+        fun onBind(
+            item: MessageUIModel,
+            listener: () -> String,
+            onItemClick: ((MessageUIModel) -> Unit)?
+        ) {
             with(binding) {
                 messageTextView.text = item.message
                 val isSentMessage = (listener.invoke() == item.userId)
-
+                root.setOnClickListener {
+                    if (!item.isDelivered){
+                        onItemClick?.invoke(item)
+                    }
+                }
                 messageTextView.text = item.message
                 dateTextView.text =
                     if (item.isDelivered) item.dateSentStr else dateTextView.context.getString(
@@ -46,12 +66,12 @@ class ChatAdapter(listener: () -> String) :
                 )
 
                 setColor(
-                    if (isSentMessage) C.purple_light else C.neutral_02,
+                    if (isSentMessage) C.purple_light else C.neutral_02_dark_grey,
                     smallCircleImageView, bigCircleImageView, messageTextView
                 )
 
                 setTextColor(
-                    if (item.isDelivered) C.neutral_02 else C.red,
+                    if (item.isDelivered) C.neutral_02_dark_grey else C.error_label,
                     dateTextView
                 )
 
@@ -59,7 +79,6 @@ class ChatAdapter(listener: () -> String) :
                     if (item.isDelivered) OPACITY_FULL else OPACITY_HALF,
                     root
                 )
-
             }
         }
 
