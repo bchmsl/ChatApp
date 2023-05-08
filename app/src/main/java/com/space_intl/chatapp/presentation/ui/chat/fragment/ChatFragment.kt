@@ -3,32 +3,25 @@ package com.space_intl.chatapp.presentation.ui.chat.fragment
 import android.content.IntentFilter
 import com.space_intl.chatapp.common.extensions.*
 import com.space_intl.chatapp.common.util.S
-import com.space_intl.chatapp.databinding.FragmentChatBinding
-import com.space_intl.chatapp.presentation.base.fragment.BaseChatFragment
-import com.space_intl.chatapp.presentation.base.fragment.Inflater
 import com.space_intl.chatapp.presentation.ui.chat.adapter.ChatAdapter
+import com.space_intl.chatapp.presentation.ui.chat.base.fragment.BaseChatFragment
 import com.space_intl.chatapp.presentation.ui.chat.model.MessageUIModel
 import com.space_intl.chatapp.presentation.ui.chat.viewmodel.ChatViewModel
 import com.space_intl.chatapp.service.MessageReceiver
 import com.space_intl.chatapp.service.Receiver
-import kotlin.reflect.KClass
 
-class ChatFragment : BaseChatFragment<FragmentChatBinding, ChatViewModel>() {
+class ChatFragment : BaseChatFragment() {
+    override val userId: String
+        get() = tag.toString()
 
-    private val userMessagesAdapter by lazy { ChatAdapter(listener) }
+    override val receiver: Receiver
+        get() = MessageReceiver(fragmentActivity)
 
-    override val filter by lazy { IntentFilter(receiver.actionName) }
-    override fun setReceiver(): Receiver = lazy { MessageReceiver(fragmentActivity) }.value
-    override fun inflate(): Inflater<FragmentChatBinding> = FragmentChatBinding::inflate
-    override val viewModelClass: KClass<ChatViewModel> get() = ChatViewModel::class
+    override val userMessagesAdapter: ChatAdapter by lazy { ChatAdapter(listener) }
 
-    override fun onBindViewModel(vm: ChatViewModel) {
-        vm.retrieveMessages(userId)
-        listeners(vm)
-        loadContent(vm)
-    }
+    override val filter: IntentFilter by lazy{IntentFilter(receiver.actionName)}
 
-    private fun listeners(vm: ChatViewModel) {
+    override fun listeners(vm: ChatViewModel) {
         with(binding) {
             sendButton.setOnClickListener {
                 sendMessage(vm)
@@ -44,13 +37,13 @@ class ChatFragment : BaseChatFragment<FragmentChatBinding, ChatViewModel>() {
         }
     }
 
-    private fun resendMessage(vm: ChatViewModel, oldMessage: MessageUIModel) {
+    override fun resendMessage(vm: ChatViewModel, oldMessage: MessageUIModel) {
         val messageText = oldMessage.message
         vm.removeMessage(oldMessage)
         vm.sendMessage(messageText, userId, fragmentContext.isOnline())
     }
 
-    private fun loadContent(vm: ChatViewModel) {
+    override fun loadContent(vm: ChatViewModel) {
         binding.chatRecyclerView.apply {
             adapter = userMessagesAdapter
             itemAnimator = null
@@ -63,7 +56,7 @@ class ChatFragment : BaseChatFragment<FragmentChatBinding, ChatViewModel>() {
         }
     }
 
-    private fun sendMessage(vm: ChatViewModel) {
+    override fun sendMessage(vm: ChatViewModel) {
         with(binding) {
             messageEditText.text?.let {
                 vm.sendMessage(
