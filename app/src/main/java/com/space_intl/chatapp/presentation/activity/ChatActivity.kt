@@ -21,7 +21,9 @@ class ChatActivity : AppCompatActivity() {
         ) {
             setDefaultNightMode(MODE_NIGHT_YES)
         }
-        setupFragments()
+        if (savedInstanceState == null) {
+            setupFragments()
+        }
         setSwitchListener()
     }
 

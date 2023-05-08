@@ -12,14 +12,13 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/dimen_0_dp"
         android:clipToPadding="false"
-        android:paddingVertical="@dimen/dimen_18_dp"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintBottom_toTopOf="@id/messageTextInputLayout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:stackFromEnd="true"
-        tools:itemCount="3"
+        tools:itemCount="15"
         tools:listitem="@layout/layout_message_item" />
 
     <com.google.android.material.textfield.TextInputLayout

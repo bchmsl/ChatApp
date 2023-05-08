@@ -2,4 +2,6 @@
     <string name="app_name">Chat App</string>
 
     <string name="prompt_enter_message">დაწერე შეტყობინება …</string>
+    <string name="not_delivered">Not Delivered</string>
+    <string name="check_internet_connection">Check internet connection</string>
 </resources>
