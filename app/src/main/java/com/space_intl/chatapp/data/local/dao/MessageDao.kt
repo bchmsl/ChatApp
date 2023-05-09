@@ -7,6 +7,10 @@ import androidx.room.Query
 import com.space_intl.chatapp.data.local.model.MessageEntity
 import kotlinx.coroutines.flow.Flow
 
+/**
+ * Data access object for [MessageEntity] model.
+ * @see Dao
+ */
 @Dao
 interface MessageDao {
     @Query("SELECT * FROM chat")

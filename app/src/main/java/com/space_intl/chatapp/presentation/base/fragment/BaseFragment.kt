@@ -12,17 +12,26 @@ import kotlin.reflect.KClass
 
 typealias Inflater<VB> = (inflater: LayoutInflater, container: ViewGroup, attachToRoot: Boolean) -> VB
 
+/**
+ * Base fragment for all fragments.
+ * @param VB The ViewBinding class for the fragment.
+ * @param VM The ViewModel class for the fragment.
+ */
 abstract class BaseFragment<VB : ViewBinding, VM : ViewModel> : Fragment() {
 
     private var _binding: VB? = null
     protected val binding get() = _binding!!
 
-    protected abstract val userId: String
-    protected val listener = {
-        userId
-    }
-
+    /**
+     * The view model class for the fragment.
+     * @see ViewModel
+     */
     protected abstract val viewModelClass: KClass<VM>
+
+    /**
+     * The view model for the fragment.
+     * @see viewModelForClass
+     */
     private val vm: VM by viewModelForClass(clazz = viewModelClass)
 
     abstract fun inflate(): Inflater<VB>

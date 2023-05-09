@@ -3,6 +3,10 @@ package com.space_intl.chatapp.common.extensions
 import java.text.SimpleDateFormat
 import java.util.*
 
+/**
+ * Extension function to convert Millisecond date to formatted date.
+ */
+
 fun Long.toFormattedDate(): String {
     val date = Date(this)
     val calendar = Calendar.getInstance()

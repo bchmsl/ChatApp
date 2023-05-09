@@ -6,6 +6,10 @@ import com.space_intl.chatapp.presentation.ui.chat.viewmodel.ChatViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
+/**
+ * Module for the view model.
+ * @see module
+ */
 val viewModelModule = module {
     viewModel { ChatViewModel(get(), MessageUIDomainMapper(), MessageDomainUIMapper()) }
 }

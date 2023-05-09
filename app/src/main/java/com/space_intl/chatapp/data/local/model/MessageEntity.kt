@@ -3,6 +3,10 @@ package com.space_intl.chatapp.data.local.model
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
+/**
+ * Entity class for the chat.
+ * @see Entity
+ */
 @Entity(tableName = "chat")
 data class MessageEntity(
     val message: String,
@@ -11,4 +15,4 @@ data class MessageEntity(
     val isDelivered: Boolean = true,
     @PrimaryKey(autoGenerate = true)
     val id: Int = 0
-    )
+)

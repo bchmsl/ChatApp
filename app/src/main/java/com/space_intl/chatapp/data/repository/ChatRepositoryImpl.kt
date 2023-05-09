@@ -8,11 +8,21 @@ import com.space_intl.chatapp.domain.repository.ChatRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
+/**
+ * Implementation of [ChatRepository].
+ * @see ChatRepository
+ */
 class ChatRepositoryImpl(
     private val dao: MessageDao,
     private val domainEntityMapper: MessageDomainEntityMapper,
     private val entityDomainMapper: MessageEntityDomainMapper
 ) : ChatRepository {
+
+    /**
+     * Retrieves all messages from the database.
+     * @return A [Flow] of [List] of [MessageDomainModel].
+     * @see ChatRepository.retrieveMessages
+     */
     override fun retrieveMessages(): Flow<List<MessageDomainModel>> =
         dao.retrieveAll().map { entities ->
             entities.map { entity ->
@@ -20,10 +30,20 @@ class ChatRepositoryImpl(
             }
         }
 
+    /**
+     * Saves a message to the database.
+     * @param messageModel The message to be saved.
+     * @see ChatRepository.saveMessage
+     */
     override suspend fun saveMessage(messageModel: MessageDomainModel) {
         dao.insertMessage(domainEntityMapper(messageModel))
     }
 
+    /**
+     * Removes a message from the database.
+     * @param messageModel The message to be removed.
+     * @see ChatRepository.removeMessage
+     */
     override suspend fun removeMessage(messageModel: MessageDomainModel) {
         dao.deleteMessage(domainEntityMapper(messageModel))
     }

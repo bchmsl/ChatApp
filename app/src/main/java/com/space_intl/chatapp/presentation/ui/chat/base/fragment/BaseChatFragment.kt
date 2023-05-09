@@ -1,6 +1,5 @@
 package com.space_intl.chatapp.presentation.ui.chat.base.fragment
 
-import android.content.Intent
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.space_intl.chatapp.databinding.FragmentChatBinding
 import com.space_intl.chatapp.presentation.base.fragment.BaseFragment
@@ -11,29 +10,44 @@ import com.space_intl.chatapp.presentation.ui.chat.viewmodel.ChatViewModel
 import com.space_intl.chatapp.service.BroadcastReceiver
 import kotlin.reflect.KClass
 
-abstract class BaseChatFragment: BaseFragment<FragmentChatBinding, ChatViewModel>(), BroadcastReceiver {
+/**
+ * Base fragment for Chat Fragments.
+ * Implements [BroadcastReceiver] to send broadcast messages.
+ * @see BaseFragment
+ * @see BroadcastReceiver
+ */
+abstract class BaseChatFragment :
+    BaseFragment<FragmentChatBinding, ChatViewModel>(), BroadcastReceiver {
 
     abstract val userMessagesAdapter: ChatAdapter
-
     override val viewModelClass: KClass<ChatViewModel> get() = ChatViewModel::class
+
+    protected abstract val userId: String
+    protected val listener = {
+        userId
+    }
 
     override fun inflate(): Inflater<FragmentChatBinding> =
         FragmentChatBinding::inflate
 
     override fun onStart() {
         super.onStart()
+
+        // Register the receiver to the local broadcast manager.
         requireActivity().registerReceiver(receiver, filter)
     }
 
     override fun onStop() {
         super.onStop()
+
+        // Unregister the receiver from the local broadcast manager.
         LocalBroadcastManager.getInstance(requireContext()).unregisterReceiver(receiver)
     }
 
     override fun onBindViewModel(vm: ChatViewModel) {
         vm.retrieveMessages(userId)
-        listeners(vm)
         loadContent(vm)
+        listeners(vm)
     }
 
     abstract fun listeners(vm: ChatViewModel)
@@ -45,6 +59,6 @@ abstract class BaseChatFragment: BaseFragment<FragmentChatBinding, ChatViewModel
     abstract fun sendMessage(vm: ChatViewModel)
 
     override fun sendBroadcast(action: String) {
-        requireActivity().sendBroadcast(Intent(action))
+        receiver.sendBroadcast(action)
     }
 }

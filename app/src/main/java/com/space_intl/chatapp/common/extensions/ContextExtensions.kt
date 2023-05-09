@@ -8,10 +8,20 @@ import android.util.Log
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 
+/**
+ * Extension function to hide keyboard.
+ */
+
 fun Context.hideKeyboard(view: View) {
     val inputMethodManager = getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
     inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
 }
+
+/**
+ * Extension function to check internet connection.
+ * @return true if internet connection is available, false otherwise.
+ * Logs the type of connection if it is available.
+ */
 
 fun Context.isOnline(): Boolean {
     val connectivityManager = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
