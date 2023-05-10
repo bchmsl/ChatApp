@@ -5,6 +5,11 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 
+/**
+ * Receiver for broadcast messages.
+ * @param activity The activity where the receiver is registered.
+ * @see BroadcastReceiver
+ */
 abstract class Receiver(private val activity: Activity) : BroadcastReceiver() {
     var callback: (() -> Unit)? = null
     abstract val actionName: String
@@ -13,7 +18,7 @@ abstract class Receiver(private val activity: Activity) : BroadcastReceiver() {
         callback?.invoke()
     }
 
-    fun sendBroadcast(action: String){
+    fun sendBroadcast(action: String) {
         intent.action = action
         activity.sendBroadcast(intent)
     }

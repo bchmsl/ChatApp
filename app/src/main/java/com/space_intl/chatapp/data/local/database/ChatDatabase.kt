@@ -5,6 +5,10 @@ import androidx.room.RoomDatabase
 import com.space_intl.chatapp.data.local.dao.MessageDao
 import com.space_intl.chatapp.data.local.model.MessageEntity
 
+/**
+ * Database class for the chat.
+ * @see Database
+ */
 @Database(entities = [MessageEntity::class], version = 1)
 abstract class ChatDatabase : RoomDatabase() {
     abstract fun dao(): MessageDao

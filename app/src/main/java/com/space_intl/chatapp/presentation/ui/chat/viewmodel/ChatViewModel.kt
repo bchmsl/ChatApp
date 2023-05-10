@@ -11,18 +11,41 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import java.util.*
 
+/**
+ * [ViewModel] for [ChatFragment]
+ * @param chatRepository [ChatRepository] to retrieve, send and remove messages
+ * @param uiDomainMapper [MessageUIDomainMapper] to map [MessageUIModel] to [MessageDomainModel]
+ * @param domainUiMapper [MessageDomainUIMapper] to map [MessageDomainModel] to [MessageUIModel]
+ * @see ViewModel
+ * @see ChatRepository
+ * @see MessageUIDomainMapper
+ * @see MessageDomainUIMapper
+ */
 class ChatViewModel(
     private val chatRepository: ChatRepository,
     private val uiDomainMapper: MessageUIDomainMapper,
     private val domainUiMapper: MessageDomainUIMapper
 ) : ViewModel() {
 
+    /**
+     * Messages History State for [ChatAdapter]
+     */
     private val _messagesHistoryState = MutableStateFlow<List<MessageUIModel>>(emptyList())
     val messagesHistoryState get() = _messagesHistoryState.asStateFlow()
 
+    /**
+     * Message Sent State for [MessageReceiver]
+     * Used to notify [ChatFragment] that message was sent
+     *
+     */
     private val _messageSentState = MutableStateFlow(false)
     val messageSentState get() = _messageSentState.asStateFlow()
 
+    /**
+     * Function to retrieve messages from [ChatRepository]
+     * @param userId to filter messages by user
+     * @see ChatRepository
+     */
     fun retrieveMessages(userId: String) {
         executeAsync(IO) {
             chatRepository.retrieveMessages().collect { messages ->
@@ -36,11 +59,18 @@ class ChatViewModel(
         }
     }
 
-    fun sendMessage(etMessage: String, user: String, isOnline: Boolean) {
+    /**
+     * Function to send message to [ChatRepository]
+     * @param messageBody to send
+     * @param user to send message from
+     * @param isOnline to check if user is online
+     * @see ChatRepository
+     */
+    fun sendMessage(messageBody: String, user: String, isOnline: Boolean) {
         executeAsync(IO) {
-            if (etMessage.isNotBlank()) {
+            if (messageBody.isNotBlank()) {
                 val message = MessageUIModel(
-                    etMessage,
+                    messageBody,
                     Calendar.getInstance().timeInMillis,
                     user,
                     isDelivered = isOnline
@@ -51,12 +81,24 @@ class ChatViewModel(
         }
     }
 
+    /**
+     * Function to remove message from [ChatRepository]
+     * @param messageUIModel to remove
+     * @see ChatRepository
+     */
     fun removeMessage(messageUIModel: MessageUIModel) {
         executeAsync(IO) {
             chatRepository.removeMessage(uiDomainMapper(messageUIModel))
         }
     }
 
+    /**
+     * Function to filter which messages to be shown by [ChatAdapter]
+     * Filtered if message is not delivered and is to be shown
+     * @param messages to filter
+     * @param userId to filter by
+     * @return filtered messages
+     */
     private fun filterMessages(
         messages: List<MessageUIModel>,
         userId: String

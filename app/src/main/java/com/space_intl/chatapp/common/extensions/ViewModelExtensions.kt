@@ -6,6 +6,10 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlin.coroutines.CoroutineContext
 
+/**
+ * Extension function to execute coroutine in ViewModel.
+ */
+
 fun ViewModel.executeAsync(
     coroutineContext: CoroutineContext = Dispatchers.Main,
     block: suspend () -> Unit
