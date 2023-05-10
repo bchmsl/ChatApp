@@ -10,6 +10,7 @@ import java.util.*
 fun Long.toFormattedDate(): String {
     val date = Date(this)
     val calendar = Calendar.getInstance()
+    val locale = Locale("ka", "GE")
     calendar.time = date
 
     val today = Calendar.getInstance()
@@ -22,19 +23,25 @@ fun Long.toFormattedDate(): String {
 
     return when {
         calendar.get(Calendar.YEAR) == today.get(Calendar.YEAR) &&
+                calendar.get(Calendar.DAY_OF_YEAR) == today.get(Calendar.DAY_OF_YEAR) &&
+                calendar.get(Calendar.HOUR_OF_DAY) == today.get(Calendar.HOUR_OF_DAY) &&
+                calendar.get(Calendar.MINUTE) >= today.get(Calendar.MINUTE) - 3 -> {
+            "ახლახანს"
+        }
+        calendar.get(Calendar.YEAR) == today.get(Calendar.YEAR) &&
                 calendar.get(Calendar.DAY_OF_YEAR) == today.get(Calendar.DAY_OF_YEAR) -> {
-            SimpleDateFormat("HH:mm", Locale.getDefault()).format(date)
+            SimpleDateFormat("HH:mm", locale).format(date)
         }
         calendar.get(Calendar.YEAR) == yesterday.get(Calendar.YEAR) &&
                 calendar.get(Calendar.DAY_OF_YEAR) == yesterday.get(Calendar.DAY_OF_YEAR) -> {
-            "Yesterday"
+            "გუშინ"
         }
         calendar.get(Calendar.YEAR) == lastWeek.get(Calendar.YEAR) &&
                 calendar.get(Calendar.WEEK_OF_YEAR) == lastWeek.get(Calendar.WEEK_OF_YEAR) -> {
-            SimpleDateFormat("EEEE", Locale.getDefault()).format(date)
+            SimpleDateFormat("EEEE", locale).format(date)
         }
         else -> {
-            SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(date)
+            SimpleDateFormat("dd MMM yyyy", locale).format(date)
         }
-    }
+    }.uppercase()
 }

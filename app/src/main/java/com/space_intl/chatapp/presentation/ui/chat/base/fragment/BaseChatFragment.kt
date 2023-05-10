@@ -3,6 +3,7 @@ package com.space_intl.chatapp.presentation.ui.chat.base.fragment
 import android.content.IntentFilter
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.space_intl.chatapp.common.extensions.*
+import com.space_intl.chatapp.common.util.C
 import com.space_intl.chatapp.common.util.S
 import com.space_intl.chatapp.databinding.FragmentChatBinding
 import com.space_intl.chatapp.presentation.base.adapter.AdapterFlipper
@@ -75,7 +76,8 @@ open class BaseChatFragment :
                     if (fragmentContext.isOnline()) {
                         resendMessage(vm, item)
                     } else {
-                        root.makeSnackbar(getString(S.check_internet_connection), true)
+                        root.makeSnackbar(getString(S.check_internet_connection).uppercase(), true)
+                            .setTextColor(resources.getColor(C.white, null))
                     }
                 }
             })

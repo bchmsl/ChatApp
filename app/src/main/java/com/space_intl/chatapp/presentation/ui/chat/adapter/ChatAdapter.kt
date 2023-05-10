@@ -150,7 +150,7 @@ class ChatAdapter(
                     setTextColor(C.neutral_02_dark_grey, dateTextView)
                     setAlpha(OPACITY_FULL, root)
                 } else {
-                    dateTextView.text = dateTextView.context.getString(S.not_delivered)
+                    dateTextView.text = dateTextView.context.getString(S.not_delivered).uppercase()
                     setTextColor(C.error_label, dateTextView)
                     setAlpha(OPACITY_HALF, root)
                 }
