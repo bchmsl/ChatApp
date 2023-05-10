@@ -5,6 +5,8 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.space_intl.chatapp.common.extensions.*
 import com.space_intl.chatapp.common.util.S
 import com.space_intl.chatapp.databinding.FragmentChatBinding
+import com.space_intl.chatapp.presentation.base.adapter.AdapterFlipper
+import com.space_intl.chatapp.presentation.base.adapter.OnClickListener
 import com.space_intl.chatapp.presentation.base.fragment.BaseFragment
 import com.space_intl.chatapp.presentation.base.fragment.Inflater
 import com.space_intl.chatapp.presentation.ui.chat.adapter.ChatAdapter
@@ -26,17 +28,17 @@ open class BaseChatFragment :
 
     override val viewModelClass: KClass<ChatViewModel> get() = ChatViewModel::class
     override val receiver: Receiver get() = MessageReceiver(fragmentActivity)
-    private val userMessagesAdapter: ChatAdapter by lazy { ChatAdapter(listener) }
     override val filter: IntentFilter by lazy { IntentFilter(receiver.actionName) }
     override fun inflate(): Inflater<FragmentChatBinding> = FragmentChatBinding::inflate
 
-    protected val userId: String get() = userId()
-    open fun userId(): String = userId()
-
-    private val listener = {
-        userId
+    private val userMessagesAdapter: ChatAdapter by lazy {
+        ChatAdapter(object : AdapterFlipper<String> {
+            override fun userId(): String = userId
+        })
     }
 
+    private val userId: String get() = userId()
+    protected open fun userId(): String = userId()
 
     override fun onStart() {
         super.onStart()
@@ -68,13 +70,15 @@ open class BaseChatFragment :
             }
 
             // Resend not delivered message when the user clicks on it.
-            userMessagesAdapter.onItemClick {
-                if (fragmentContext.isOnline()) {
-                    resendMessage(vm, it)
-                } else {
-                    root.makeSnackbar(getString(S.check_internet_connection), true)
+            userMessagesAdapter.setListener(object : OnClickListener<MessageUIModel> {
+                override fun onClick(item: MessageUIModel, position: Int) {
+                    if (fragmentContext.isOnline()) {
+                        resendMessage(vm, item)
+                    } else {
+                        root.makeSnackbar(getString(S.check_internet_connection), true)
+                    }
                 }
-            }
+            })
         }
     }
 
