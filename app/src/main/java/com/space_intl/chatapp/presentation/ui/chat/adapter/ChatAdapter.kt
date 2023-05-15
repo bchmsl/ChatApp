@@ -8,29 +8,28 @@ import androidx.recyclerview.widget.RecyclerView
 import com.space_intl.chatapp.common.util.C
 import com.space_intl.chatapp.common.util.S
 import com.space_intl.chatapp.databinding.LayoutMessageItemBinding
+import com.space_intl.chatapp.presentation.base.adapter.AdapterFlipper
 import com.space_intl.chatapp.presentation.base.adapter.CustomItemCallback
+import com.space_intl.chatapp.presentation.base.adapter.OnClickListener
 import com.space_intl.chatapp.presentation.base.adapter.ViewHolderHelper
 import com.space_intl.chatapp.presentation.ui.chat.adapter.ChatAdapter.ChatViewHolder
 import com.space_intl.chatapp.presentation.ui.chat.model.MessageUIModel
 
 /**
  * RecyclerView Adapter for [ChatFragment].
- * @param listener as a parameter to handle message flip in the RecyclerView.
+ * @param flipper as a parameter to handle message flip in the RecyclerView.
  * @see ListAdapter
  * @see ChatViewHolder
  * @see CustomItemCallback
  */
-class ChatAdapter(private val listener: () -> String) :
-    ListAdapter<MessageUIModel, ChatViewHolder>(CustomItemCallback<MessageUIModel>()) {
+class ChatAdapter(
+    private val flipper: AdapterFlipper<String>,
+) : ListAdapter<MessageUIModel, ChatViewHolder>(CustomItemCallback<MessageUIModel>()) {
 
-    private var click: ((MessageUIModel) -> Unit)? = null
+    private var listener: OnClickListener<MessageUIModel>? = null
 
-    /**
-     * Function to handle item click.
-     * @param block as a parameter to be invoked upon item click.
-     */
-    fun onItemClick(block: (MessageUIModel) -> Unit) {
-        click = block
+    fun setListener(listener: OnClickListener<MessageUIModel>) {
+        this.listener = listener
     }
 
     /**
@@ -39,8 +38,9 @@ class ChatAdapter(private val listener: () -> String) :
      * @param position as a parameter for the position of the item.
      * @see ListAdapter.onBindViewHolder
      */
+
     override fun onBindViewHolder(holder: ChatViewHolder, position: Int) {
-        holder.onBind(getItem(position), listener, click)
+        holder.onBind(getItem(position), flipper, listener)
     }
 
     /**
@@ -71,22 +71,22 @@ class ChatAdapter(private val listener: () -> String) :
         /**
          * Function to bind the data to the view.
          * @param item as a parameter to bind the data to the view.
-         * @param listener as a parameter to handle message flip in the RecyclerView.
+         * @param flipper as a parameter to handle message flip in the RecyclerView.
          * @param onItemClick as a parameter to handle item click.
          */
         fun onBind(
             item: MessageUIModel,
-            listener: () -> String,
-            onItemClick: ((MessageUIModel) -> Unit)?
+            flipper: AdapterFlipper<String>,
+            listener: OnClickListener<MessageUIModel>?
         ) {
             with(binding) {
                 messageTextView.text = item.message
-                val isSentMessage = (listener.invoke() == item.userId)
+                val isSentMessage = (flipper.userId() == item.userId)
                 handleDelivery(item, binding)
                 handleFlip(isSentMessage, binding)
 
                 setListener(root, item) {
-                    onItemClick?.invoke(item)
+                    listener?.onClick(item, adapterPosition)
                 }
             }
         }
@@ -102,7 +102,7 @@ class ChatAdapter(private val listener: () -> String) :
         private fun setListener(view: View, item: MessageUIModel, onItemClick: () -> Unit) {
             view.setOnClickListener {
                 if (!item.isDelivered) {
-                    onItemClick.invoke()
+                    onItemClick()
                 }
             }
         }
@@ -150,7 +150,7 @@ class ChatAdapter(private val listener: () -> String) :
                     setTextColor(C.neutral_02_dark_grey, dateTextView)
                     setAlpha(OPACITY_FULL, root)
                 } else {
-                    dateTextView.text = dateTextView.context.getString(S.not_delivered)
+                    dateTextView.text = dateTextView.context.getString(S.not_delivered).uppercase()
                     setTextColor(C.error_label, dateTextView)
                     setAlpha(OPACITY_HALF, root)
                 }
