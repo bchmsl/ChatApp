@@ -11,5 +11,5 @@ import android.content.IntentFilter
 interface BroadcastReceiver {
     val receiver: Receiver
     val filter: IntentFilter
-    fun sendBroadcast(action: String)
+    fun sendBroadcast(action: String, messageId: Int)
 }

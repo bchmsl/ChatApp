@@ -117,7 +117,10 @@ open class BaseChatFragment :
 
         // Adapter callback for the item click.
         receiver.callback = {
-            vm.retrieveMessages(userId)
+            vm.retrieveMessageById(it)
+        }
+        collectAsync(vm.sentMessageState) { message ->
+            userMessagesAdapter.currentList.toMutableList().add(message)
         }
     }
 
@@ -138,13 +141,13 @@ open class BaseChatFragment :
             messageEditText.setEmpty()
             collectAsync(vm.messageSentState) { messageSent ->
                 if (messageSent) {
-                    sendBroadcast(receiver.actionName)
+                    sendBroadcast(receiver.actionName, userMessagesAdapter.itemCount + 1)
                 }
             }
         }
     }
 
-    override fun sendBroadcast(action: String) {
-        receiver.sendBroadcast(action)
+    override fun sendBroadcast(action: String, messageId: Int) {
+        receiver.sendBroadcast(action, messageId)
     }
 }

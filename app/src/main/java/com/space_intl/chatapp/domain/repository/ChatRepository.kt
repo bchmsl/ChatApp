@@ -16,6 +16,13 @@ interface ChatRepository {
     fun retrieveMessages(): Flow<List<MessageDomainModel>>
 
     /**
+     * Retrieves a message from the database.
+     * @param id The id of the message to be retrieved.
+     * @return A [Flow] of [MessageDomainModel].
+     */
+    fun retrieveMessageById(id: Int): Flow<MessageDomainModel>
+
+    /**
      * Saves a message to the database.
      * @param messageModel The message to be saved.
      */
