@@ -41,15 +41,15 @@ open class BaseChatFragment :
     private val userId: String get() = userId()
     protected open fun userId(): String = userId()
 
-    override fun onStart() {
-        super.onStart()
+    override fun onResume() {
+        super.onResume()
 
         // Register the receiver to the local broadcast manager.
         requireActivity().registerReceiver(receiver, filter)
     }
 
-    override fun onStop() {
-        super.onStop()
+    override fun onPause() {
+        super.onPause()
 
         // Unregister the receiver from the local broadcast manager.
         LocalBroadcastManager.getInstance(requireContext()).unregisterReceiver(receiver)
