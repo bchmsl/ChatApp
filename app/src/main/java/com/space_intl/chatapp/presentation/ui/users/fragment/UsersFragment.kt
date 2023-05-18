@@ -17,6 +17,14 @@ import com.space_intl.chatapp.presentation.ui.users.model.UserUIModel
 import com.space_intl.chatapp.presentation.ui.users.viewmodel.UsersViewModel
 import kotlin.reflect.KClass
 
+
+/**
+ * Fragment for listing and creating users.
+ * @see BaseFragment
+ * @see UsersViewModel
+ * @see UsersAdapter
+ * @see ChatFragment
+ */
 class UsersFragment : BaseFragment<FragmentUsersBinding, UsersViewModel>() {
 
     private val usersAdapter by lazy { UsersAdapter() }
@@ -37,9 +45,17 @@ class UsersFragment : BaseFragment<FragmentUsersBinding, UsersViewModel>() {
         }
         usersAdapter.setListener(object : OnClickListener<UserUIModel> {
             override fun onClick(item: UserUIModel, position: Int) {
+                // Opens the chat fragment
                 openChat(position, false)
+                var list = usersAdapter.currentList.toMutableList()
+                list = list.map {
+                    UserUIModel(it.userName, false)
+                }.toMutableList()
+                list[position] = list[position].copy(isOpened = true)
+                usersAdapter.submitList(list.toList())
             }
         })
+        // Switches day and night mode
         binding.switchToggleButton.setOnClickListener {
             val switch = binding.switchToggleButton
             AppCompatDelegate.setDefaultNightMode(if (switch.isChecked) AppCompatDelegate.MODE_NIGHT_YES else AppCompatDelegate.MODE_NIGHT_NO)
@@ -47,14 +63,20 @@ class UsersFragment : BaseFragment<FragmentUsersBinding, UsersViewModel>() {
     }
 
     private fun openChat(index: Int, isNewChat: Boolean) {
+        // Create new chat instance
         val fragment by lazy { ChatFragment() }
         val userName = "User ${index.inc()}"
         if (isNewChat) vm.saveUser(userName)
         val bundle by lazy { Bundle() }
+
+        // Add username argument into Chat bundle
         bundle.putString(ChatActivity.EXTRA_TAG, userName)
         fragment.arguments = bundle
+
+        // Open Chat fragment
         val transaction =
             parentFragmentManager.beginTransaction().replace(R.id.mainContainer, fragment)
+
         // This check does not work, I don't know why
         if (!(activity as AppCompatActivity).isOrientationLandscape()) {
             transaction.addToBackStack("transaction")
@@ -64,10 +86,11 @@ class UsersFragment : BaseFragment<FragmentUsersBinding, UsersViewModel>() {
     }
 
     private fun loadContent() {
+        // Loads the content after binding
         vm.retrieveUsers()
         binding.usersRecyclerView.adapter = usersAdapter
         collectAsync(vm.usersState) { users ->
-            usersAdapter.submitList(users)
+            usersAdapter.submitList(users.toList())
         }
     }
 

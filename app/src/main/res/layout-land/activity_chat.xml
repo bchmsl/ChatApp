@@ -21,10 +21,8 @@
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/mainContainer"
-        android:name="com.space_intl.chatapp.presentation.ui.chat.fragment.ChatFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="0.4"
-        tools:layout="@layout/fragment_chat" />
+        android:layout_weight="0.4" />
 
 </LinearLayout>

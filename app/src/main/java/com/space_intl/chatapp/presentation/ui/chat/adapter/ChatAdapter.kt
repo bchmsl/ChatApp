@@ -13,7 +13,9 @@ import com.space_intl.chatapp.presentation.base.adapter.CustomItemCallback
 import com.space_intl.chatapp.presentation.base.adapter.OnClickListener
 import com.space_intl.chatapp.presentation.base.adapter.ViewHolderHelper
 import com.space_intl.chatapp.presentation.ui.chat.adapter.ChatAdapter.ChatViewHolder
+import com.space_intl.chatapp.presentation.ui.chat.fragment.ChatFragment
 import com.space_intl.chatapp.presentation.ui.chat.model.MessageUIModel
+
 
 /**
  * RecyclerView Adapter for [ChatFragment].
@@ -72,7 +74,7 @@ class ChatAdapter(
          * Function to bind the data to the view.
          * @param item as a parameter to bind the data to the view.
          * @param flipper as a parameter to handle message flip in the RecyclerView.
-         * @param onItemClick as a parameter to handle item click.
+         * @param listener as a parameter to handle item click.
          */
         fun onBind(
             item: MessageUIModel,
@@ -81,7 +83,9 @@ class ChatAdapter(
         ) {
             with(binding) {
                 messageTextView.text = item.message
-                val isSentMessage = (flipper.userId() == item.userId)
+                userNameTextView.text = item.userName
+                val isSentMessage = (flipper.userName() == item.userName)
+                userNameTextView.visibility = if (isSentMessage) View.GONE else View.VISIBLE
                 handleDelivery(item, binding)
                 handleFlip(isSentMessage, binding)
 
@@ -97,7 +101,7 @@ class ChatAdapter(
          * @param item as a parameter to handle message flip in the RecyclerView.
          * @param onItemClick as a parameter to handle item click.
          * @see View.setOnClickListener
-         * @see ChatAdapter.onItemClick
+         * @see OnClickListener.onClick
          */
         private fun setListener(view: View, item: MessageUIModel, onItemClick: () -> Unit) {
             view.setOnClickListener {
@@ -117,7 +121,7 @@ class ChatAdapter(
         private fun handleFlip(isSentMessage: Boolean, binding: ItemMessageBinding) {
             with(binding) {
                 if (isSentMessage) {
-                    setScaleX(DIRECTION_LTR, root, messageTextView, dateTextView)
+                    setScaleX(DIRECTION_LTR, root, messageTextView, dateTextView, userNameTextView)
                     setColor(
                         C.purple_light,
                         smallCircleImageView,
@@ -125,7 +129,7 @@ class ChatAdapter(
                         messageTextView
                     )
                 } else {
-                    setScaleX(DIRECTION_RTL, root, messageTextView, dateTextView)
+                    setScaleX(DIRECTION_RTL, root, messageTextView, dateTextView, userNameTextView)
                     setColor(
                         C.neutral_02_dark_grey,
                         smallCircleImageView,

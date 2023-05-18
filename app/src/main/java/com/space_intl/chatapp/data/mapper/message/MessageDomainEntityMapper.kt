@@ -17,7 +17,7 @@ class MessageDomainEntityMapper : ModelMapper<MessageDomainModel, MessageEntity>
         MessageEntity(
             message = model.message,
             dateSent = model.dateSent,
-            userId = model.userId,
+            userName = model.userName,
             isDelivered = model.isDelivered,
             id = model.id
         )

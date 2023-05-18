@@ -34,12 +34,12 @@ open class BaseChatFragment :
 
     private val userMessagesAdapter: ChatAdapter by lazy {
         ChatAdapter(object : AdapterFlipper<String> {
-            override fun userId(): String = userId
+            override fun userName(): String = userName
         })
     }
 
-    private val userId: String get() = userId()
-    protected open fun userId(): String = userId()
+    private val userName: String get() = userName()
+    protected open fun userName(): String = userName()
 
     override fun onResume() {
         super.onResume()
@@ -56,7 +56,7 @@ open class BaseChatFragment :
     }
 
     override fun onBind() {
-        vm.retrieveMessages(userId)
+        vm.retrieveMessages(userName)
         loadContent()
         listeners()
     }
@@ -90,7 +90,6 @@ open class BaseChatFragment :
 
     /**
      * Resends a message.
-     * @param vm The view model of the fragment.
      * @param oldMessage The message to be resent.
      * @see ChatViewModel.removeMessage
      * @see ChatViewModel.sendMessage
@@ -98,16 +97,15 @@ open class BaseChatFragment :
     private fun resendMessage(oldMessage: MessageUIModel) {
         val messageText = oldMessage.message
         vm.removeMessage(oldMessage)
-        vm.sendMessage(messageText, userId, fragmentContext.isOnline())
+        vm.sendMessage(messageText, userName, fragmentContext.isOnline())
     }
 
     /**
      * Loads the content of the fragment.
      * Is the first method to be called when the fragment view is created.
-     * @param vm The view model of the fragment.
      */
     private fun loadContent() {
-
+        binding.userNameTextView?.text = userName
         // Set the adapter of the recycler view.
         binding.chatRecyclerView.apply {
             adapter = userMessagesAdapter
@@ -130,7 +128,6 @@ open class BaseChatFragment :
 
     /**
      * Sends a message.
-     * @param vm The view model of the fragment.
      * @see ChatViewModel.sendMessage
      */
     private fun sendMessage() {
@@ -138,7 +135,7 @@ open class BaseChatFragment :
             messageEditText.text?.let {
                 vm.sendMessage(
                     it.toString(),
-                    userId,
+                    userName,
                     fragmentContext.isOnline()
                 )
             }

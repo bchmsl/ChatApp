@@ -33,13 +33,19 @@ private fun provideChatDatabase(context: Context): ChatDatabase =
     ).build()
 
 /**
- * Provides the DAO.
+ * Provides the Chat DAO.
  *
  * @param database the database.
- * @return the DAO.
+ * @return the Chat DAO
  */
 private fun provideChatDao(database: ChatDatabase): MessageDao =
     database.messageDao()
 
+/**
+ * Provides the User DAO.
+ *
+ * @param database the database.
+ * @return the User DAO
+ */
 private fun provideUserDao(database: ChatDatabase): UserDao =
     database.userDao()

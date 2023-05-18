@@ -5,5 +5,5 @@ package com.space_intl.chatapp.presentation.base.adapter
  * @param T as a generic type.
  */
 interface AdapterFlipper<T : Any> {
-    fun userId(): T
+    fun userName(): T
 }

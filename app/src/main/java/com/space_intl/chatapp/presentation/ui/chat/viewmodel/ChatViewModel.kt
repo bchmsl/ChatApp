@@ -2,17 +2,21 @@ package com.space_intl.chatapp.presentation.ui.chat.viewmodel
 
 import androidx.lifecycle.ViewModel
 import com.space_intl.chatapp.common.extensions.executeAsync
+import com.space_intl.chatapp.domain.model.MessageDomainModel
 import com.space_intl.chatapp.domain.repository.ChatRepository
+import com.space_intl.chatapp.presentation.ui.chat.adapter.ChatAdapter
+import com.space_intl.chatapp.presentation.ui.chat.fragment.ChatFragment
 import com.space_intl.chatapp.presentation.ui.chat.model.MessageUIModel
 import com.space_intl.chatapp.presentation.ui.chat.model.mapper.MessageDomainUIMapper
 import com.space_intl.chatapp.presentation.ui.chat.model.mapper.MessageUIDomainMapper
+import com.space_intl.chatapp.service.MessageReceiver
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import java.util.*
 
 /**
- * [ViewModel] for [ChatFragment]
+ * ViewModel for [ChatFragment]
  * @param chatRepository [ChatRepository] to retrieve, send and remove messages
  * @param uiDomainMapper [MessageUIDomainMapper] to map [MessageUIModel] to [MessageDomainModel]
  * @param domainUiMapper [MessageDomainUIMapper] to map [MessageDomainModel] to [MessageUIModel]
@@ -125,7 +129,7 @@ class ChatViewModel(
         userId: String
     ): List<MessageUIModel> {
         return messages.filter {
-            val isMessageSent = it.userId == userId
+            val isMessageSent = it.userName == userId
             val isMessageShown = (!it.isDelivered && isMessageSent) || it.isDelivered
             isMessageShown
         }

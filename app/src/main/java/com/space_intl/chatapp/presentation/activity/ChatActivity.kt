@@ -6,7 +6,6 @@ import androidx.appcompat.app.AppCompatDelegate.*
 import com.space_intl.chatapp.common.extensions.isOrientationLandscape
 import com.space_intl.chatapp.common.extensions.setFragmentToContainer
 import com.space_intl.chatapp.databinding.ActivityChatBinding
-import com.space_intl.chatapp.presentation.ui.chat.fragment.ChatFragment
 import com.space_intl.chatapp.presentation.ui.users.fragment.UsersFragment
 
 /**
@@ -37,23 +36,13 @@ class ChatActivity : AppCompatActivity() {
      * @see setFragmentToContainer
      */
     private fun setupFragments() {
-        setFragments(isOrientationLandscape())
-    }
-
-    private fun setFragments(isLandscape: Boolean) {
         with(binding) {
-            if (isLandscape) {
+            if (isOrientationLandscape()) {
                 if (landscapeUsersFragment != null) {
-                    val chatFragment by lazy { ChatFragment() }
-                    val bundle by lazy { Bundle() }
-                    bundle.putString(EXTRA_TAG, "User 1")
-                    chatFragment.arguments = bundle
-                    setFragmentToContainer(mainContainer, chatFragment)
                     setFragmentToContainer(landscapeUsersFragment, UsersFragment())
                 } else return
             } else {
                 setFragmentToContainer(mainContainer, UsersFragment())
-
             }
         }
     }

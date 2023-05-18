@@ -11,7 +11,7 @@ import androidx.room.PrimaryKey
 data class MessageEntity(
     val message: String,
     val dateSent: Long,
-    val userId: String,
+    val userName: String,
     val isDelivered: Boolean = true,
     @PrimaryKey(autoGenerate = true)
     val id: Int = 0
