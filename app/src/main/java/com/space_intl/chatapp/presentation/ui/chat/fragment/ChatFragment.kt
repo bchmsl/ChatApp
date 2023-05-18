@@ -1,5 +1,6 @@
 package com.space_intl.chatapp.presentation.ui.chat.fragment
 
+import com.space_intl.chatapp.presentation.activity.ChatActivity
 import com.space_intl.chatapp.presentation.ui.chat.adapter.ChatAdapter
 import com.space_intl.chatapp.presentation.ui.chat.base.fragment.BaseChatFragment
 import com.space_intl.chatapp.presentation.ui.chat.viewmodel.ChatViewModel
@@ -12,6 +13,6 @@ import com.space_intl.chatapp.presentation.ui.chat.viewmodel.ChatViewModel
  */
 class ChatFragment : BaseChatFragment() {
     override fun userId(): String {
-        return tag.toString()
+        return arguments?.getString(ChatActivity.EXTRA_TAG, "") ?: ""
     }
 }
