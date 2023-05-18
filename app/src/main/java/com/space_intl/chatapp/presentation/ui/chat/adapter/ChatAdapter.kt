@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.space_intl.chatapp.common.util.C
 import com.space_intl.chatapp.common.util.S
-import com.space_intl.chatapp.databinding.LayoutMessageItemBinding
+import com.space_intl.chatapp.databinding.ItemMessageBinding
 import com.space_intl.chatapp.presentation.base.adapter.AdapterFlipper
 import com.space_intl.chatapp.presentation.base.adapter.CustomItemCallback
 import com.space_intl.chatapp.presentation.base.adapter.OnClickListener
@@ -52,7 +52,7 @@ class ChatAdapter(
      */
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ChatViewHolder =
         ChatViewHolder(
-            LayoutMessageItemBinding.inflate(
+            ItemMessageBinding.inflate(
                 LayoutInflater.from(parent.context),
                 parent,
                 false
@@ -65,7 +65,7 @@ class ChatAdapter(
      * @see RecyclerView.ViewHolder
      * @see ViewHolderHelper
      */
-    class ChatViewHolder(private val binding: LayoutMessageItemBinding) :
+    class ChatViewHolder(private val binding: ItemMessageBinding) :
         RecyclerView.ViewHolder(binding.root), ViewHolderHelper {
 
         /**
@@ -114,7 +114,7 @@ class ChatAdapter(
          * @see ViewHolderHelper.setScaleX
          * @see ViewHolderHelper.setColor
          */
-        private fun handleFlip(isSentMessage: Boolean, binding: LayoutMessageItemBinding) {
+        private fun handleFlip(isSentMessage: Boolean, binding: ItemMessageBinding) {
             with(binding) {
                 if (isSentMessage) {
                     setScaleX(DIRECTION_LTR, root, messageTextView, dateTextView)
@@ -143,7 +143,7 @@ class ChatAdapter(
          * @see ViewHolderHelper.setTextColor
          * @see ViewHolderHelper.setAlpha
          */
-        private fun handleDelivery(item: MessageUIModel, binding: LayoutMessageItemBinding) {
+        private fun handleDelivery(item: MessageUIModel, binding: ItemMessageBinding) {
             with(binding) {
                 if (item.isDelivered) {
                     dateTextView.text = item.dateSentStr

@@ -55,18 +55,18 @@ open class BaseChatFragment :
         LocalBroadcastManager.getInstance(requireContext()).unregisterReceiver(receiver)
     }
 
-    override fun onBindViewModel(vm: ChatViewModel) {
+    override fun onBind() {
         vm.retrieveMessages(userId)
-        loadContent(vm)
-        listeners(vm)
+        loadContent()
+        listeners()
     }
 
-    private fun listeners(vm: ChatViewModel) {
+    private fun listeners() {
         with(binding) {
 
             // Send message when the user clicks on the send button.
             sendButton.setOnClickListener {
-                sendMessage(vm)
+                sendMessage()
                 fragmentActivity.hideKeyboard(root)
             }
 
@@ -74,13 +74,17 @@ open class BaseChatFragment :
             userMessagesAdapter.setListener(object : OnClickListener<MessageUIModel> {
                 override fun onClick(item: MessageUIModel, position: Int) {
                     if (fragmentContext.isOnline()) {
-                        resendMessage(vm, item)
+                        resendMessage(item)
                     } else {
                         root.makeSnackbar(getString(S.check_internet_connection).uppercase(), true)
                             .setTextColor(resources.getColor(C.white, null))
                     }
                 }
             })
+
+            backButton?.setOnClickListener {
+                parentFragmentManager.popBackStack()
+            }
         }
     }
 
@@ -91,7 +95,7 @@ open class BaseChatFragment :
      * @see ChatViewModel.removeMessage
      * @see ChatViewModel.sendMessage
      */
-    private fun resendMessage(vm: ChatViewModel, oldMessage: MessageUIModel) {
+    private fun resendMessage(oldMessage: MessageUIModel) {
         val messageText = oldMessage.message
         vm.removeMessage(oldMessage)
         vm.sendMessage(messageText, userId, fragmentContext.isOnline())
@@ -102,7 +106,7 @@ open class BaseChatFragment :
      * Is the first method to be called when the fragment view is created.
      * @param vm The view model of the fragment.
      */
-    private fun loadContent(vm: ChatViewModel) {
+    private fun loadContent() {
 
         // Set the adapter of the recycler view.
         binding.chatRecyclerView.apply {
@@ -129,7 +133,7 @@ open class BaseChatFragment :
      * @param vm The view model of the fragment.
      * @see ChatViewModel.sendMessage
      */
-    private fun sendMessage(vm: ChatViewModel) {
+    private fun sendMessage() {
         with(binding) {
             messageEditText.text?.let {
                 vm.sendMessage(

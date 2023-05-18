@@ -13,7 +13,7 @@ import kotlinx.coroutines.flow.Flow
  */
 @Dao
 interface MessageDao {
-    @Query("SELECT * FROM chat")
+    @Query("SELECT * FROM chats")
     fun retrieveAll(): Flow<List<MessageEntity>>
 
     @Insert
@@ -22,6 +22,6 @@ interface MessageDao {
     @Delete
     suspend fun deleteMessage(messageEntity: MessageEntity)
 
-    @Query("SELECT * FROM chat WHERE id=:id")
+    @Query("SELECT * FROM chats WHERE id=:id")
     fun retrieveMessageById(id: Int): Flow<MessageEntity>
 }

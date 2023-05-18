@@ -1,4 +1,4 @@
-package com.space_intl.chatapp.data.mapper
+package com.space_intl.chatapp.data.mapper.message
 
 import com.space_intl.chatapp.common.mapper.ModelMapper
 import com.space_intl.chatapp.data.local.model.MessageEntity
