@@ -3,7 +3,6 @@ package com.space_intl.chatapp.presentation.activity
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate.*
-import androidx.appcompat.widget.AppCompatToggleButton
 import com.space_intl.chatapp.common.extensions.isOrientationLandscape
 import com.space_intl.chatapp.common.extensions.setFragmentToContainer
 import com.space_intl.chatapp.databinding.ActivityChatBinding
@@ -31,25 +30,6 @@ class ChatActivity : AppCompatActivity() {
         if (savedInstanceState == null) {
             setupFragments()
         }
-
-        setSwitchListener()
-    }
-
-    private fun setSwitchListener() {
-        with(binding) {
-//            switchToggleButton.setOnClickListener {
-//                checkSwitchState(switchToggleButton)
-//            }
-        }
-    }
-
-    /**
-     * Checks the state of the switch and sets the night mode accordingly.
-     * @param switch the switch.
-     */
-    private fun checkSwitchState(switch: AppCompatToggleButton) {
-        setDefaultNightMode(if (switch.isChecked) MODE_NIGHT_YES else MODE_NIGHT_NO)
-
     }
 
     /**

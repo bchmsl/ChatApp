@@ -2,6 +2,7 @@ package com.space_intl.chatapp.presentation.ui.users.fragment
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import com.space_intl.chatapp.R
 import com.space_intl.chatapp.common.extensions.collectAsync
 import com.space_intl.chatapp.common.extensions.isOrientationLandscape
@@ -39,6 +40,10 @@ class UsersFragment : BaseFragment<FragmentUsersBinding, UsersViewModel>() {
                 openChat(position, false)
             }
         })
+        binding.switchToggleButton.setOnClickListener {
+            val switch = binding.switchToggleButton
+            AppCompatDelegate.setDefaultNightMode(if (switch.isChecked) AppCompatDelegate.MODE_NIGHT_YES else AppCompatDelegate.MODE_NIGHT_NO)
+        }
     }
 
     private fun openChat(index: Int, isNewChat: Boolean) {
@@ -54,7 +59,7 @@ class UsersFragment : BaseFragment<FragmentUsersBinding, UsersViewModel>() {
         if (!(activity as AppCompatActivity).isOrientationLandscape()) {
             transaction.addToBackStack("transaction")
         }
-        
+
         transaction.commit()
     }
 
@@ -65,4 +70,6 @@ class UsersFragment : BaseFragment<FragmentUsersBinding, UsersViewModel>() {
             usersAdapter.submitList(users)
         }
     }
+
+
 }

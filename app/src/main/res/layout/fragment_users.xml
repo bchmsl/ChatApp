@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -8,20 +8,37 @@
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/addUserButton"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="@dimen/dimen_40_dp"
-        android:layout_marginVertical="@dimen/dimen_10_dp"
+        android:layout_marginHorizontal="@dimen/dimen_20_dp"
         android:fontFamily="sans-serif"
         android:text="@string/new_user"
         android:textAllCaps="false"
-        app:cornerRadius="@dimen/dimen_250_dp" />
+        app:cornerRadius="@dimen/dimen_250_dp"
+        app:layout_constraintBottom_toBottomOf="@+id/switchToggleButton"
+        app:layout_constraintEnd_toStartOf="@id/switchToggleButton"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/switchToggleButton" />
+
+    <androidx.appcompat.widget.AppCompatToggleButton
+        android:id="@+id/switchToggleButton"
+        android:layout_width="@dimen/dimen_64_dp"
+        android:layout_height="@dimen/dimen_32_dp"
+        android:layout_gravity="end"
+        android:layout_margin="@dimen/dimen_20_dp"
+        android:background="@drawable/ic_switch"
+        android:checked="true"
+        android:textOff=""
+        android:textOn=""
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/usersRecyclerView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="0dp"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layout_constraintTop_toBottomOf="@id/addUserButton"
         tools:listitem="@layout/item_user" />
 
-</androidx.appcompat.widget.LinearLayoutCompat>
+</androidx.constraintlayout.widget.ConstraintLayout>
