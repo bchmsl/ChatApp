@@ -1,4 +1,4 @@
-package com.space_intl.chatapp.data.mapper
+package com.space_intl.chatapp.data.mapper.message
 
 import com.space_intl.chatapp.common.mapper.ModelMapper
 import com.space_intl.chatapp.data.local.model.MessageEntity
@@ -17,7 +17,7 @@ class MessageDomainEntityMapper : ModelMapper<MessageDomainModel, MessageEntity>
         MessageEntity(
             message = model.message,
             dateSent = model.dateSent,
-            userId = model.userId,
+            userName = model.userName,
             isDelivered = model.isDelivered,
             id = model.id
         )

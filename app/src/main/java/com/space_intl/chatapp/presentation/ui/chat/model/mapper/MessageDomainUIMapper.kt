@@ -19,7 +19,7 @@ class MessageDomainUIMapper : ModelMapper<MessageDomainModel, MessageUIModel> {
             message = model.message,
             dateSent = model.dateSent,
             dateSentStr = model.dateSent.toFormattedDate(),
-            userId = model.userId,
+            userName = model.userName,
             isDelivered = model.isDelivered
         )
 }

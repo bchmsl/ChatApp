@@ -3,6 +3,7 @@ package com.space_intl.chatapp.di.module
 import android.content.Context
 import androidx.room.Room
 import com.space_intl.chatapp.data.local.dao.MessageDao
+import com.space_intl.chatapp.data.local.dao.UserDao
 import com.space_intl.chatapp.data.local.database.ChatDatabase
 import org.koin.dsl.module
 
@@ -12,7 +13,8 @@ import org.koin.dsl.module
  */
 val dbModule = module {
     single { provideChatDatabase(get()) }
-    single { provideDao(get()) }
+    single { provideChatDao(get()) }
+    single { provideUserDao(get()) }
 }
 
 /**
@@ -31,10 +33,19 @@ private fun provideChatDatabase(context: Context): ChatDatabase =
     ).build()
 
 /**
- * Provides the DAO.
+ * Provides the Chat DAO.
  *
  * @param database the database.
- * @return the DAO.
+ * @return the Chat DAO
  */
-private fun provideDao(database: ChatDatabase): MessageDao =
-    database.dao()
+private fun provideChatDao(database: ChatDatabase): MessageDao =
+    database.messageDao()
+
+/**
+ * Provides the User DAO.
+ *
+ * @param database the database.
+ * @return the User DAO
+ */
+private fun provideUserDao(database: ChatDatabase): UserDao =
+    database.userDao()

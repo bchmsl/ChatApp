@@ -32,23 +32,25 @@ abstract class BaseFragment<VB : ViewBinding, VM : ViewModel> : Fragment() {
      * The view model for the fragment.
      * @see viewModelForClass
      */
-    private val vm: VM by viewModelForClass(clazz = viewModelClass)
+    protected val vm: VM by viewModelForClass(clazz = viewModelClass)
 
     abstract fun inflate(): Inflater<VB>
-    abstract fun onBindViewModel(vm: VM)
+    abstract fun onBind()
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View {
-        _binding = this.inflate().invoke(inflater, container!!, false)
-        return binding.root
+    ): View? {
+        if (container != null) {
+            _binding = this.inflate().invoke(inflater, container, false)
+        }
+        return _binding?.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        onBindViewModel(vm)
+        onBind()
     }
 
     override fun onDestroyView() {

@@ -1,8 +1,8 @@
 package com.space_intl.chatapp.data.repository
 
 import com.space_intl.chatapp.data.local.dao.MessageDao
-import com.space_intl.chatapp.data.mapper.MessageDomainEntityMapper
-import com.space_intl.chatapp.data.mapper.MessageEntityDomainMapper
+import com.space_intl.chatapp.data.mapper.message.MessageDomainEntityMapper
+import com.space_intl.chatapp.data.mapper.message.MessageEntityDomainMapper
 import com.space_intl.chatapp.domain.model.MessageDomainModel
 import com.space_intl.chatapp.domain.repository.ChatRepository
 import kotlinx.coroutines.flow.Flow

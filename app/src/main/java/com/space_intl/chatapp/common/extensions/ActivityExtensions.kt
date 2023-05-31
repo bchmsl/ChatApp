@@ -1,5 +1,6 @@
 package com.space_intl.chatapp.common.extensions
 
+import android.content.pm.ActivityInfo
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentContainerView
@@ -23,4 +24,11 @@ fun AppCompatActivity.setFragmentToContainer(
             add(container.id, fragment)
         }
     }.commit()
+}
+
+fun AppCompatActivity.isOrientationLandscape(): Boolean {
+    return when (requestedOrientation) {
+        (ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE or ActivityInfo.SCREEN_ORIENTATION_REVERSE_LANDSCAPE or ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE or ActivityInfo.SCREEN_ORIENTATION_USER_LANDSCAPE) -> true
+        else -> false
+    }
 }

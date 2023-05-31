@@ -4,4 +4,5 @@
     <string name="prompt_enter_message">დაწერე შეტყობინება …</string>
     <string name="not_delivered">არ გაიგზავნა</string>
     <string name="check_internet_connection">შეამოწმე ინტერნეტთან კავშირი!</string>
+    <string name="new_user">New User</string>
 </resources>

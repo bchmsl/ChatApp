@@ -7,13 +7,15 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.space_intl.chatapp.common.util.C
 import com.space_intl.chatapp.common.util.S
-import com.space_intl.chatapp.databinding.LayoutMessageItemBinding
+import com.space_intl.chatapp.databinding.ItemMessageBinding
 import com.space_intl.chatapp.presentation.base.adapter.AdapterFlipper
 import com.space_intl.chatapp.presentation.base.adapter.CustomItemCallback
 import com.space_intl.chatapp.presentation.base.adapter.OnClickListener
 import com.space_intl.chatapp.presentation.base.adapter.ViewHolderHelper
 import com.space_intl.chatapp.presentation.ui.chat.adapter.ChatAdapter.ChatViewHolder
+import com.space_intl.chatapp.presentation.ui.chat.fragment.ChatFragment
 import com.space_intl.chatapp.presentation.ui.chat.model.MessageUIModel
+
 
 /**
  * RecyclerView Adapter for [ChatFragment].
@@ -52,7 +54,7 @@ class ChatAdapter(
      */
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ChatViewHolder =
         ChatViewHolder(
-            LayoutMessageItemBinding.inflate(
+            ItemMessageBinding.inflate(
                 LayoutInflater.from(parent.context),
                 parent,
                 false
@@ -65,14 +67,14 @@ class ChatAdapter(
      * @see RecyclerView.ViewHolder
      * @see ViewHolderHelper
      */
-    class ChatViewHolder(private val binding: LayoutMessageItemBinding) :
+    class ChatViewHolder(private val binding: ItemMessageBinding) :
         RecyclerView.ViewHolder(binding.root), ViewHolderHelper {
 
         /**
          * Function to bind the data to the view.
          * @param item as a parameter to bind the data to the view.
          * @param flipper as a parameter to handle message flip in the RecyclerView.
-         * @param onItemClick as a parameter to handle item click.
+         * @param listener as a parameter to handle item click.
          */
         fun onBind(
             item: MessageUIModel,
@@ -81,7 +83,9 @@ class ChatAdapter(
         ) {
             with(binding) {
                 messageTextView.text = item.message
-                val isSentMessage = (flipper.userId() == item.userId)
+                userNameTextView.text = item.userName
+                val isSentMessage = (flipper.userName() == item.userName)
+                userNameTextView.visibility = if (isSentMessage) View.GONE else View.VISIBLE
                 handleDelivery(item, binding)
                 handleFlip(isSentMessage, binding)
 
@@ -97,7 +101,7 @@ class ChatAdapter(
          * @param item as a parameter to handle message flip in the RecyclerView.
          * @param onItemClick as a parameter to handle item click.
          * @see View.setOnClickListener
-         * @see ChatAdapter.onItemClick
+         * @see OnClickListener.onClick
          */
         private fun setListener(view: View, item: MessageUIModel, onItemClick: () -> Unit) {
             view.setOnClickListener {
@@ -114,10 +118,10 @@ class ChatAdapter(
          * @see ViewHolderHelper.setScaleX
          * @see ViewHolderHelper.setColor
          */
-        private fun handleFlip(isSentMessage: Boolean, binding: LayoutMessageItemBinding) {
+        private fun handleFlip(isSentMessage: Boolean, binding: ItemMessageBinding) {
             with(binding) {
                 if (isSentMessage) {
-                    setScaleX(DIRECTION_LTR, root, messageTextView, dateTextView)
+                    setScaleX(DIRECTION_LTR, root, messageTextView, dateTextView, userNameTextView)
                     setColor(
                         C.purple_light,
                         smallCircleImageView,
@@ -125,7 +129,7 @@ class ChatAdapter(
                         messageTextView
                     )
                 } else {
-                    setScaleX(DIRECTION_RTL, root, messageTextView, dateTextView)
+                    setScaleX(DIRECTION_RTL, root, messageTextView, dateTextView, userNameTextView)
                     setColor(
                         C.neutral_02_dark_grey,
                         smallCircleImageView,
@@ -143,7 +147,7 @@ class ChatAdapter(
          * @see ViewHolderHelper.setTextColor
          * @see ViewHolderHelper.setAlpha
          */
-        private fun handleDelivery(item: MessageUIModel, binding: LayoutMessageItemBinding) {
+        private fun handleDelivery(item: MessageUIModel, binding: ItemMessageBinding) {
             with(binding) {
                 if (item.isDelivered) {
                     dateTextView.text = item.dateSentStr

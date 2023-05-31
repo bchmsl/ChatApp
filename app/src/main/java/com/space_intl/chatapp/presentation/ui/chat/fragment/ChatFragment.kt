@@ -12,7 +12,7 @@ import com.space_intl.chatapp.presentation.ui.chat.viewmodel.ChatViewModel
  * @see ChatAdapter
  */
 class ChatFragment : BaseChatFragment() {
-    override fun userId(): String {
+    override fun userName(): String {
         return arguments?.getString(ChatActivity.EXTRA_TAG, "") ?: ""
     }
 }
