@@ -21,4 +21,7 @@ interface MessageDao {
 
     @Delete
     suspend fun deleteMessage(messageEntity: MessageEntity)
+
+    @Query("SELECT * FROM chat WHERE id=:id")
+    fun retrieveMessageById(id: Int): Flow<MessageEntity>
 }

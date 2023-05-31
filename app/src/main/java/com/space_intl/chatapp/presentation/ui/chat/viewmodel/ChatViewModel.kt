@@ -42,6 +42,14 @@ class ChatViewModel(
     val messageSentState get() = _messageSentState.asStateFlow()
 
     /**
+     * Message Sent State for [MessageReceiver]
+     * Used to notify [ChatFragment] that message was sent
+     *
+     */
+    private val _sentMessageState = MutableStateFlow<MessageUIModel?>(null)
+    val sentMessageState get() = _sentMessageState.asStateFlow()
+
+    /**
      * Function to retrieve messages from [ChatRepository]
      * @param userId to filter messages by user
      * @see ChatRepository
@@ -55,6 +63,19 @@ class ChatViewModel(
                         userId
                     )
                 )
+            }
+        }
+    }
+
+    /**
+     * Function to retrieve message by id from [ChatRepository]
+     * @param id to filter messages by id
+     * @see ChatRepository
+     */
+    fun retrieveMessageById(id: Int) {
+        executeAsync(IO) {
+            chatRepository.retrieveMessageById(id).collect { message ->
+                _sentMessageState.emit(domainUiMapper(message))
             }
         }
     }

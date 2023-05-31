@@ -21,9 +21,7 @@ class ChatActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         // Set the default night mode to dark mode.
-        if (getDefaultNightMode() == MODE_NIGHT_FOLLOW_SYSTEM ||
-            getDefaultNightMode() == MODE_NIGHT_UNSPECIFIED
-        ) {
+        if (getDefaultNightMode() == MODE_NIGHT_FOLLOW_SYSTEM || getDefaultNightMode() == MODE_NIGHT_UNSPECIFIED) {
             setDefaultNightMode(MODE_NIGHT_YES)
         }
 
@@ -58,9 +56,20 @@ class ChatActivity : AppCompatActivity() {
      */
     private fun setupFragments() {
         with(binding) {
-            setFragmentToContainer(firstFragmentContainer, ChatFragment(), "firstFragment")
-            setFragmentToContainer(secondFragmentContainer, ChatFragment(), "secondFragment")
+            val containers = listOf(firstFragmentContainer, secondFragmentContainer)
+            containers.forEachIndexed { index, container ->
+                val fragment = ChatFragment()
+                val bundle = Bundle()
+                bundle.putString(EXTRA_TAG, "fragment_${index.inc()}")
+                fragment.arguments = bundle
+                setFragmentToContainer(
+                    container, fragment
+                )
+            }
         }
     }
-}
 
+    companion object {
+        const val EXTRA_TAG = "userId"
+    }
+}

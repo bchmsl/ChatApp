@@ -11,15 +11,18 @@ import android.content.Intent
  * @see BroadcastReceiver
  */
 abstract class Receiver(private val activity: Activity) : BroadcastReceiver() {
-    var callback: (() -> Unit)? = null
+    var callback: ((Int) -> Unit)? = null
     abstract val actionName: String
     abstract val intent: Intent
+    abstract val extraName: String
     override fun onReceive(context: Context?, intent: Intent?) {
-        callback?.invoke()
+        val id = intent?.getIntExtra(extraName, 0) ?: 0
+        callback?.invoke(id)
     }
 
-    fun sendBroadcast(action: String) {
+    fun sendBroadcast(action: String, messageId: Int) {
         intent.action = action
+        intent.putExtra(extraName, messageId)
         activity.sendBroadcast(intent)
     }
 }

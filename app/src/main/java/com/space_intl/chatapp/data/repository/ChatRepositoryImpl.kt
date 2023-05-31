@@ -31,6 +31,17 @@ class ChatRepositoryImpl(
         }
 
     /**
+     * Retrieves a message from the database.
+     * @param id The id of the message to be retrieved.
+     * @return A [Flow] of [MessageDomainModel].
+     * @see ChatRepository.retrieveMessageById
+     */
+    override fun retrieveMessageById(id: Int): Flow<MessageDomainModel> =
+        dao.retrieveMessageById(id).map { entity ->
+            entityDomainMapper(entity)
+        }
+
+    /**
      * Saves a message to the database.
      * @param messageModel The message to be saved.
      * @see ChatRepository.saveMessage

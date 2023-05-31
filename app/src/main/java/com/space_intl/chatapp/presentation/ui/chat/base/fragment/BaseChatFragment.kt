@@ -41,15 +41,15 @@ open class BaseChatFragment :
     private val userId: String get() = userId()
     protected open fun userId(): String = userId()
 
-    override fun onStart() {
-        super.onStart()
+    override fun onResume() {
+        super.onResume()
 
         // Register the receiver to the local broadcast manager.
         requireActivity().registerReceiver(receiver, filter)
     }
 
-    override fun onStop() {
-        super.onStop()
+    override fun onPause() {
+        super.onPause()
 
         // Unregister the receiver from the local broadcast manager.
         LocalBroadcastManager.getInstance(requireContext()).unregisterReceiver(receiver)
@@ -117,7 +117,10 @@ open class BaseChatFragment :
 
         // Adapter callback for the item click.
         receiver.callback = {
-            vm.retrieveMessages(userId)
+            vm.retrieveMessageById(it)
+        }
+        collectAsync(vm.sentMessageState) { message ->
+            userMessagesAdapter.currentList.toMutableList().add(message)
         }
     }
 
@@ -138,13 +141,13 @@ open class BaseChatFragment :
             messageEditText.setEmpty()
             collectAsync(vm.messageSentState) { messageSent ->
                 if (messageSent) {
-                    sendBroadcast(receiver.actionName)
+                    sendBroadcast(receiver.actionName, userMessagesAdapter.itemCount + 1)
                 }
             }
         }
     }
 
-    override fun sendBroadcast(action: String) {
-        receiver.sendBroadcast(action)
+    override fun sendBroadcast(action: String, messageId: Int) {
+        receiver.sendBroadcast(action, messageId)
     }
 }

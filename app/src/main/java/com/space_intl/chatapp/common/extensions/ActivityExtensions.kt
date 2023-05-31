@@ -10,19 +10,17 @@ import androidx.fragment.app.FragmentContainerView
  * Replace fragment if it is restored.
  * @param container FragmentContainerView
  * @param fragment Fragment
- * @param tag String
  */
 
 fun AppCompatActivity.setFragmentToContainer(
     container: FragmentContainerView,
-    fragment: Fragment,
-    tag: String
+    fragment: Fragment
 ) {
     supportFragmentManager.beginTransaction().apply {
         if (savedStateRegistry.isRestored) {
-            replace(container.id, fragment, tag)
+            replace(container.id, fragment)
         } else {
-            add(container.id, fragment, tag)
+            add(container.id, fragment)
         }
     }.commit()
 }

@@ -11,6 +11,8 @@ import android.content.Intent
 class MessageReceiver(activity: Activity) : Receiver(activity) {
     override val actionName: String
         get() = "MESSAGE_SENT"
+    override val extraName: String
+        get() = "messageId"
 
     override val intent: Intent by lazy { Intent() }
 }
