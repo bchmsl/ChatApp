@@ -1,4 +1,4 @@
-package com.bchmsl.chatapp
+package com.space_intl.chatapp
 
 import org.junit.Test
 

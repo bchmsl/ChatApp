@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".presentation.ui.chat.fragment.ChatFragment"
+    tools:ignore="RtlSymmetry">
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/chatRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dimen_0_dp"
+        android:clipToPadding="false"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layout_constraintBottom_toTopOf="@id/messageTextInputLayout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:stackFromEnd="true"
+        tools:itemCount="15"
+        tools:listitem="@layout/layout_message_item" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/messageTextInputLayout"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.MessageTextInputLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/dimen_16_dp"
+        android:layout_marginBottom="@dimen/dimen_30_dp"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/messageEditText"
+            style="@style/Base.Widget.MaterialComponents.TextInputEditText.MessageTextInputEditText"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:hint="@string/prompt_enter_message"
+            android:paddingEnd="@dimen/dimen_56_dp"
+            tools:text="@tools:sample/lorem" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <androidx.appcompat.widget.AppCompatImageButton
+        android:id="@+id/sendButton"
+        android:layout_width="@dimen/dimen_55_dp"
+        android:layout_height="@dimen/dimen_0_dp"
+        android:background="@android:color/transparent"
+        android:padding="@dimen/dimen_10_dp"
+        android:scaleType="fitCenter"
+        android:src="@drawable/button_send"
+        app:layout_constraintBottom_toBottomOf="@id/messageTextInputLayout"
+        app:layout_constraintDimensionRatio="1"
+        app:layout_constraintEnd_toEndOf="@id/messageTextInputLayout" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
